@@ -4,6 +4,7 @@
  */
 package entidades;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
@@ -17,6 +18,8 @@ public class Pelicula {
     private ArrayList<String> generos;
     private Double duracion;
     private String clasificacion;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     public Pelicula() {
     }
@@ -72,6 +75,22 @@ public class Pelicula {
     @Override
     public String toString() {
         return "Pelicula{" + "_id=" + _id + ", titulo=" + titulo + ", generos=" + generos + ", duracion=" + duracion + ", clasificacion=" + clasificacion + '}';
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author jalt2
  */
-public class FuncionDetalle {
+public class FuncionDetalleDTO {
     //Para mostrar asientos
     private String id;
     private String peliculaTitulo;
@@ -20,10 +20,10 @@ public class FuncionDetalle {
     private String hora;
     private ArrayList<AsientoDTO> asientos;
 
-    public FuncionDetalle() {
+    public FuncionDetalleDTO() {
     }
 
-    public FuncionDetalle(String id, String peliculaTitulo, LocalDate fecha, String hora, ArrayList<AsientoDTO> asientos) {
+    public FuncionDetalleDTO(String id, String peliculaTitulo, LocalDate fecha, String hora, ArrayList<AsientoDTO> asientos) {
         this.id = id;
         this.peliculaTitulo = peliculaTitulo;
         this.fecha = fecha;
