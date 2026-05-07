@@ -4,7 +4,7 @@
  */
 package dtos;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,20 +13,29 @@ import java.util.ArrayList;
 public class PeliculaDTO {
     private String id;
     private String titulo;
-    private ArrayList<String> generos;
+    private List<String> generos;
     private Double duracion;
     private String clasificacion;
 
     public PeliculaDTO() {
     }
 
-    public PeliculaDTO(String id, String titulo, ArrayList<String> generos, Double duracion, String clasificacion) {
+    public PeliculaDTO(String id, String titulo, List<String> generos, Double duracion, String clasificacion) {
         this.id = id;
         this.titulo = titulo;
         this.generos = generos;
         this.duracion = duracion;
         this.clasificacion = clasificacion;
     }
+
+    public PeliculaDTO(String titulo, List<String> generos, Double duracion, String clasificacion) {
+        this.titulo = titulo;
+        this.generos = generos;
+        this.duracion = duracion;
+        this.clasificacion = clasificacion;
+    }
+    
+    
 
     public String getId() {
         return id;
@@ -44,11 +53,11 @@ public class PeliculaDTO {
         this.titulo = titulo;
     }
 
-    public ArrayList<String> getGeneros() {
+    public List<String> getGeneros() {
         return generos;
     }
 
-    public void setGeneros(ArrayList<String> generos) {
+    public void setGeneros(List<String> generos) {
         this.generos = generos;
     }
 

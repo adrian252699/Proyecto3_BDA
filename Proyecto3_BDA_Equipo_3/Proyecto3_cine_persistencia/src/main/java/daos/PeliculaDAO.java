@@ -31,9 +31,9 @@ public class PeliculaDAO implements IPeliculaDAO{
     private final MongoCollection<Pelicula> coleccion;
     private final MongoCollection<Document> coleccionDoc;
 
-    public PeliculaDAO(MongoCollection<Pelicula> coleccion) {
+    public PeliculaDAO() {
         this.coleccion = ConexionMongo.getCollection(
-                        "peliculasS",
+                        "peliculas",
                         Pelicula.class
         );
         

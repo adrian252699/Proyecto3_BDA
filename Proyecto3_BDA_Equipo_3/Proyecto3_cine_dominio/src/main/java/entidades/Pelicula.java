@@ -5,7 +5,8 @@
 package entidades;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 /**
@@ -15,16 +16,19 @@ import org.bson.types.ObjectId;
 public class Pelicula {
     private ObjectId _id;
     private String titulo;
-    private ArrayList<String> generos;
+    private List<String> generos;
     private Double duracion;
     private String clasificacion;
+    
+    @BsonProperty("createdAt")
     private Instant createdAt;
+    
     private Instant updatedAt;
 
     public Pelicula() {
     }
 
-    public Pelicula(ObjectId _id, String titulo, ArrayList<String> generos, Double duracion, String clasificacion) {
+    public Pelicula(ObjectId _id, String titulo, List<String> generos, Double duracion, String clasificacion) {
         this._id = _id;
         this.titulo = titulo;
         this.generos = generos;
@@ -48,11 +52,11 @@ public class Pelicula {
         this.titulo = titulo;
     }
 
-    public ArrayList<String> getGeneros() {
+    public List<String> getGeneros() {
         return generos;
     }
 
-    public void setGeneros(ArrayList<String> generos) {
+    public void setGeneros(List<String> generos) {
         this.generos = generos;
     }
 

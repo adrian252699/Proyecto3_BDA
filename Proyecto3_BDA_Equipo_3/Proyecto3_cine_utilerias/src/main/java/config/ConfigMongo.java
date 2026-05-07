@@ -11,5 +11,5 @@ package config;
 public class ConfigMongo {
     
     public static final String URL = "mongodb://localhost:27017/Itson";
-    public static final String DB_NAME = "LearnUP";
+    public static final String DB_NAME = "CineU";
 }
