@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package excepciones;
+package excepciones.daos;
 
 /**
  *
  * @author jalt2
  */
-public class NegocioException extends Exception{
-    public NegocioException(String mensaje) {
+public class DaoException extends Exception{
+    public DaoException(String mensaje) {
         super(mensaje);
     }
 
-    public NegocioException(String mensaje, Throwable causa) {
+    public DaoException(String mensaje, Throwable causa) {
         super(mensaje, causa);
     }
 }

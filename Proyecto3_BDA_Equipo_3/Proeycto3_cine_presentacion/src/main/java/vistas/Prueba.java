@@ -6,7 +6,7 @@ package vistas;
 
 import controllers.PeliculaController;
 import dtos.PeliculaDTO;
-import excepciones.ControllerException;
+import excepciones.presentacion.ControllerException;
 import java.util.List;
 
 /**
@@ -21,13 +21,6 @@ public class Prueba {
     public static void main(String[] args) throws ControllerException {
         // TODO code application logic here
         PeliculaController controller = new PeliculaController();
-        
-        
-        PeliculaDTO pelicula1 = new PeliculaDTO("Stars Wars: Episode III - La venganza de los sith", List.of("Accion","Aventura"), 140.0, "PG-13");
-        
-        PeliculaDTO guardada = controller.guardarPelicula(pelicula1);
-        
-        System.out.println("Id: " + guardada.getId());
     }
     
 }

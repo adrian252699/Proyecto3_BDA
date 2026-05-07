@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package excepciones;
+package excepciones.negocio;
 
 /**
  *
  * @author jalt2
  */
-public class ControllerException extends Exception{
-    public ControllerException(String mensaje) {
+public class NegocioException extends Exception{
+    public NegocioException(String mensaje) {
         super(mensaje);
     }
 
-    public ControllerException(String mensaje, Throwable causa) {
+    public NegocioException(String mensaje, Throwable causa) {
         super(mensaje, causa);
     }
 }

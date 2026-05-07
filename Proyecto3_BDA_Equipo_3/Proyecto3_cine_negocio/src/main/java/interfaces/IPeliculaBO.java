@@ -5,7 +5,7 @@
 package interfaces;
 
 import dtos.PeliculaDTO;
-import excepciones.NegocioException;
+import excepciones.negocio.NegocioException;
 import java.util.List;
 
 /**

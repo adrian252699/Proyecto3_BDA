@@ -6,15 +6,17 @@ package daos;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.client.model.Sorts;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import config.ConexionMongo;
 import entidades.Pelicula;
-import excepciones.DaoException;
-import excepciones.EntityNotFoundException;
+import excepciones.daos.DaoException;
+import excepciones.daos.EntityNotFoundException;
 import interfaces.IPeliculaDAO;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -143,13 +145,13 @@ public class PeliculaDAO implements IPeliculaDAO{
     }
 
     @Override
-    public List<Pelicula> listarPeliculas() throws DaoException,EntityNotFoundException {
+    public List<Pelicula> listarPeliculas() throws DaoException {
         try {
             
             List<Pelicula> listaPeliculas = coleccion.find().into(new ArrayList<>());
             
             if (listaPeliculas.isEmpty()) {
-                throw new EntityNotFoundException("Lista Vacia");
+                return new ArrayList<>();
             }
             
             return listaPeliculas;
@@ -159,7 +161,7 @@ public class PeliculaDAO implements IPeliculaDAO{
     }
 
     @Override
-    public List<Pelicula> listarPeliculasPaginado(int pagina, int limite) throws DaoException, EntityNotFoundException {
+    public List<Pelicula> listarPeliculasPaginado(int pagina, int limite) throws DaoException {
         try {
             int skip = (pagina - 1) * limite;
             
@@ -177,12 +179,48 @@ public class PeliculaDAO implements IPeliculaDAO{
 
     @Override
     public List<Pelicula> buscarPorGenero(String genero) throws DaoException, EntityNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            
+            if (genero == null) {
+                throw new DaoException("Genero de la pelicula Requerido");
+            }
+            
+            List<Pelicula> peliculasGenero = coleccion.find(Filters.eq("generos",genero))
+                    .sort(Sorts.ascending("titulo"))
+                    .into(new ArrayList<>());
+            
+            if (peliculasGenero.isEmpty()) {
+                throw new EntityNotFoundException("No se encontraron peliculas del genero: " + genero);
+            }
+            
+            return peliculasGenero;
+            
+        } catch (MongoException e) {
+            throw new DaoException("No fue buscar por genero", e);
+        }
     }
 
     @Override
     public List<Pelicula> buscarPorClasificacion(String clasificacion) throws DaoException, EntityNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            
+            if (clasificacion == null) {
+                throw new DaoException("Clasificacion de la pelicula Requerido");
+            }
+            
+            List<Pelicula> peliculasGenero = coleccion.find(Filters.eq("clasificacion",clasificacion))
+                    .sort(Sorts.ascending("titulo"))
+                    .into(new ArrayList<>());
+            
+            if (peliculasGenero.isEmpty()) {
+                throw new EntityNotFoundException("No se encontraron peliculas de la clasificacion: " + clasificacion);
+            }
+            
+            return peliculasGenero;
+            
+        } catch (MongoException e) {
+            throw new DaoException("No fue buscar por genero", e);
+        }
     }
     
 }
