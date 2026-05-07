@@ -6,6 +6,7 @@ package interfaces;
 
 import entidades.Pelicula;
 import excepciones.DaoException;
+import excepciones.EntityNotFoundException;
 import java.util.List;
 import org.bson.types.ObjectId;
 
@@ -16,11 +17,17 @@ import org.bson.types.ObjectId;
 public interface IPeliculaDAO {
     public Pelicula guardarPelicula(Pelicula pelicula)throws DaoException;
     
-    public Pelicula actualizarPelicula(Pelicula pelicula)throws DaoException;
+    public Pelicula actualizarPelicula(Pelicula pelicula)throws DaoException, EntityNotFoundException;
     
-    public boolean eliminarPelicula(ObjectId _id)throws DaoException;
+    public boolean eliminarPelicula(ObjectId _id)throws DaoException, EntityNotFoundException;
     
-    public Pelicula buscarPeliculaId(ObjectId _id)throws DaoException;
+    public Pelicula buscarPeliculaId(ObjectId _id)throws DaoException,EntityNotFoundException;
     
-    public List<Pelicula> listarPeliculas()throws DaoException;
+    public List<Pelicula> listarPeliculas()throws DaoException,EntityNotFoundException;
+    
+    public List<Pelicula> listarPeliculasPaginado(int pagina, int limite) throws DaoException,EntityNotFoundException;
+    
+    public List<Pelicula> buscarPorGenero(String genero)throws DaoException,EntityNotFoundException;
+
+    public List<Pelicula> buscarPorClasificacion(String clasificacion)throws DaoException,EntityNotFoundException;
 }

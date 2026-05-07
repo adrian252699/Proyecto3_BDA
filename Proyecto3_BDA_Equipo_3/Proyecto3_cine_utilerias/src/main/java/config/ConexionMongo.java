@@ -61,4 +61,12 @@ public class ConexionMongo {
     public static <T> MongoCollection<T> getCollection(String nombre, Class<T> clase) {
         return database.getCollection(nombre, clase);
     }
+    
+    public static <T> MongoCollection<T> getCollectionGenerico(String collectionName, Class<T> clazz) {
+        if (mongoClient == null)
+            throw new IllegalStateException("MongoClientProvider no inicializado. Llama a init() antes.");
+
+        MongoDatabase db = mongoClient.getDatabase(ConfigMongo.DB_NAME);
+        return db.getCollection(collectionName, clazz);
+    }
 }
