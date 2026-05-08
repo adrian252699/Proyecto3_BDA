@@ -27,7 +27,7 @@ public interface IPeliculaDAO {
     
     public List<Pelicula> listarPeliculasPaginado(int pagina, int limite) throws DaoException;
     
-    public List<Pelicula> buscarPorGenero(String genero)throws DaoException,EntityNotFoundException;
+    public List<Pelicula> buscarPorGenero(String genero)throws DaoException;
 
-    public List<Pelicula> buscarPorClasificacion(String clasificacion)throws DaoException,EntityNotFoundException;
+    public List<Pelicula> buscarPorClasificacion(String clasificacion)throws DaoException;
 }

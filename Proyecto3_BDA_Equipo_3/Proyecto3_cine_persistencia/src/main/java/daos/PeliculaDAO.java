@@ -178,7 +178,7 @@ public class PeliculaDAO implements IPeliculaDAO{
     }
 
     @Override
-    public List<Pelicula> buscarPorGenero(String genero) throws DaoException, EntityNotFoundException {
+    public List<Pelicula> buscarPorGenero(String genero) throws DaoException {
         try {
             
             if (genero == null) {
@@ -188,11 +188,7 @@ public class PeliculaDAO implements IPeliculaDAO{
             List<Pelicula> peliculasGenero = coleccion.find(Filters.eq("generos",genero))
                     .sort(Sorts.ascending("titulo"))
                     .into(new ArrayList<>());
-            
-            if (peliculasGenero.isEmpty()) {
-                throw new EntityNotFoundException("No se encontraron peliculas del genero: " + genero);
-            }
-            
+
             return peliculasGenero;
             
         } catch (MongoException e) {
@@ -201,7 +197,7 @@ public class PeliculaDAO implements IPeliculaDAO{
     }
 
     @Override
-    public List<Pelicula> buscarPorClasificacion(String clasificacion) throws DaoException, EntityNotFoundException {
+    public List<Pelicula> buscarPorClasificacion(String clasificacion) throws DaoException {
         try {
             
             if (clasificacion == null) {
@@ -211,10 +207,6 @@ public class PeliculaDAO implements IPeliculaDAO{
             List<Pelicula> peliculasGenero = coleccion.find(Filters.eq("clasificacion",clasificacion))
                     .sort(Sorts.ascending("titulo"))
                     .into(new ArrayList<>());
-            
-            if (peliculasGenero.isEmpty()) {
-                throw new EntityNotFoundException("No se encontraron peliculas de la clasificacion: " + clasificacion);
-            }
             
             return peliculasGenero;
             

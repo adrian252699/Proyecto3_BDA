@@ -69,4 +69,20 @@ public class PeliculaController {
             throw new ControllerException("Error al listar las pelicula", e);
         }
     }
+    
+    public List<PeliculaDTO> buscarPorGenero(String genero) throws ControllerException{
+        try {
+            return this.peliculaBO.buscarPorGenero(genero);
+        } catch (NegocioException e) {
+            throw new ControllerException("Error al buscar por genero de pelicula", e);
+        }
+    }
+    
+    public List<PeliculaDTO> buscarPorClasificacioni(String clasificacion) throws ControllerException{
+        try {
+            return this.peliculaBO.buscarPorClasificacion(clasificacion);
+        } catch (NegocioException e) {
+            throw new ControllerException("Error al buscar por clasificacion", e);
+        }
+    }
 }

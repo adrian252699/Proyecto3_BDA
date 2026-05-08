@@ -228,12 +228,28 @@ public class PeliculaBO implements IPeliculaBO{
 
     @Override
     public List<PeliculaDTO> buscarPorGenero(String genero) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (genero == null || genero.trim().isEmpty()) {
+            throw new NegocioException("El genero de la pelicula es obligatoria");
+        }
+        
+        try {
+            return mapper.toDTOList(peliculaDAO.buscarPorGenero(genero));
+        } catch (DaoException e) {
+            throw new NegocioException("No fue posible buscar por genero",e);
+        }
     }
 
     @Override
     public List<PeliculaDTO> buscarPorClasificacion(String clasificacion) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (clasificacion == null || clasificacion.trim().isEmpty()) {
+            throw new NegocioException("La clasificacion es obligatoria");
+        }
+        
+        try {
+            return mapper.toDTOList(peliculaDAO.buscarPorClasificacion(clasificacion));
+        } catch (DaoException e) {
+            throw new NegocioException("No fue posible buscar por clasificacion",e);
+        }
     }
     
 }
