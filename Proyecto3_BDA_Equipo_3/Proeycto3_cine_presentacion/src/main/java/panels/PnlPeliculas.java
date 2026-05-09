@@ -24,6 +24,7 @@ import tables.ModeloTablaPeliculas;
 public class PnlPeliculas extends javax.swing.JPanel {
     
     private final PeliculaController control;
+    private String idPeliculaSeleccionada;
     
     /**
      * Creates new form PnlPeliculas
@@ -36,6 +37,12 @@ public class PnlPeliculas extends javax.swing.JPanel {
         this.add(pnlPeliculas, BorderLayout.CENTER);
         this.spnDuracion.setValue(1);
         this.control = control;
+        
+        tblPeliculas.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                cargarPeliculaSeleccionada();
+            }
+        });
         
         try {
             llenarTablaPeliculas();
@@ -190,9 +197,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
                     JOptionPane.ERROR_MESSAGE
                 );
             }
-            
-            
-            
+
         } catch (ControllerException e) {
             JOptionPane.showMessageDialog(
                 this,
@@ -209,6 +214,161 @@ public class PnlPeliculas extends javax.swing.JPanel {
                 JOptionPane.ERROR_MESSAGE
             );
         } 
+    }
+    
+    private boolean actualizar(){
+        try {
+            limpiarBordes();
+            
+            String id = idPeliculaSeleccionada;
+            String titulo = this.txtTitulo.getText().trim();
+            List<String> generos = this.obtenerGenerosSeleccionados();
+            String clasificacion = this.cmbClasificacion.getSelectedItem().toString();
+            Double duracion = ((Number) spnDuracion.getValue()).doubleValue();
+            
+            if (id == null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Seleccione una película.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return false;
+            }
+            
+            if (titulo.isEmpty()) {
+                txtTitulo.setBorder(
+                BorderFactory.createLineBorder(
+                        Color.RED,
+                        2
+                    )
+                );     
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El título es obligatorio.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                return false;
+            }
+            
+             if (generos.isEmpty()) {
+
+                pnlGeneros.setBorder(
+                BorderFactory.createLineBorder(
+                        Color.RED,
+                        2
+                    )
+                ); 
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Seleccione al menos un género.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                return false;
+            }
+             
+            if (clasificacion.equals("Seleccione una opcion")) {
+                cmbClasificacion.setBorder(
+                BorderFactory.createLineBorder(
+                        Color.RED,
+                        2
+                    )
+                );
+                
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Seleccione una clasificacion.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                return false;
+            }
+             
+            if (duracion <= 0) {
+
+                spnDuracion.setBorder(
+                    BorderFactory.createLineBorder(
+                        Color.RED,
+                        2
+                    )
+                );
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "La duración debe ser mayor a 0.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                return false;
+            }
+            
+            PeliculaDTO peliculaSeleccionada = new PeliculaDTO(id, titulo, generos, duracion, clasificacion);
+            
+            PeliculaDTO peliculaActualizada = control.actualizarPelicula(peliculaSeleccionada);
+            
+            if (peliculaActualizada != null) {
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "Película actualizada correctamente."
+                );
+
+                llenarTablaPeliculas();
+
+                limpiarCampos();
+
+                limpiarSeleccion();
+
+                return true;
+            }
+            
+            return false;
+        } catch (ControllerException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return false;
+        }    
+    }
+    
+    private void cargarPeliculaSeleccionada(){
+        int fila =
+            tblPeliculas.getSelectedRow();
+
+        if (fila == -1) {
+            return;
+        }
+
+        ModeloTablaPeliculas modelo =(ModeloTablaPeliculas)tblPeliculas.getModel();
+
+        PeliculaDTO pelicula = modelo.obtenerPelicula(fila);
+
+        // CARGAR DATOS
+        idPeliculaSeleccionada = pelicula.getId();
+
+        txtTitulo.setText(pelicula.getTitulo());
+
+        spnDuracion.setValue(pelicula.getDuracion());
+
+        cmbClasificacion.setSelectedItem(pelicula.getClasificacion());
+
+        cargarGeneros(pelicula.getGeneros());
+        
+        btnGuardar.setEnabled(false);
+
+        btnEditar.setEnabled(true);
+
+        btnEliminar.setEnabled(true);
     }
     
     private void llenarTablaPeliculas() throws ControllerException{
@@ -229,6 +389,62 @@ public class PnlPeliculas extends javax.swing.JPanel {
         
     }
     
+    private void cargarGeneros(List<String> generos) {
+
+        // LIMPIAR TODOS
+
+        chkAccion.setSelected(false);
+        chkDrama.setSelected(false);
+        chkTerror.setSelected(false);
+        chkAventura.setSelected(false);
+        chkCienciaFiccion.setSelected(false);
+        chkComedia.setSelected(false);
+
+        // MARCAR LOS NECESARIOS
+
+        for (String genero : generos) {
+
+            switch (genero) {
+
+                case "Accion":
+
+                    chkAccion.setSelected(true);
+
+                    break;
+
+                case "Drama":
+
+                    chkDrama.setSelected(true);
+
+                    break;
+
+                case "Terror":
+
+                    chkTerror.setSelected(true);
+
+                    break;
+
+                case "Aventura":
+
+                    chkAventura.setSelected(true);
+
+                    break;
+                    
+                case "Ciencia Ficcion":
+
+                    chkAventura.setSelected(true);
+
+                    break;
+                    
+                case "Comedia":
+
+                    chkAventura.setSelected(true);
+
+                    break;
+            }
+        }
+    }
+    
     private void limpiarCampos(){
         txtTitulo.setText("");
 
@@ -242,6 +458,23 @@ public class PnlPeliculas extends javax.swing.JPanel {
         chkTerror.setSelected(false);
         chkCienciaFiccion.setSelected(false);
         chkComedia.setSelected(false);
+        
+        btnEliminar.setEnabled(false);
+        btnEditar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+    }
+    
+    private void limpiarSeleccion() {
+
+        idPeliculaSeleccionada = null;
+
+        tblPeliculas.clearSelection();
+
+        btnEliminar.setEnabled(false);
+
+        btnEditar.setEnabled(false);
+
+        btnGuardar.setEnabled(true);
     }
     
     private void limpiarBordes() {
@@ -465,6 +698,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
     
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
+        actualizar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed

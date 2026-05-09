@@ -28,6 +28,10 @@ public class ModeloTablaPeliculas extends AbstractTableModel {
         this.peliculas = peliculas;
     }
     
+    public PeliculaDTO obtenerPelicula(int fila) {
+        return peliculas.get(fila);
+    }
+    
     @Override
     public int getRowCount() {
         return peliculas.size();
