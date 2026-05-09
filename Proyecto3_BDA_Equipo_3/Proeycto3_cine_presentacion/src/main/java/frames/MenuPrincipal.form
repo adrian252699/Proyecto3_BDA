@@ -97,11 +97,11 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="36" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Bienvenido a CineU!"/>
+            <Property name="text" type="java.lang.String" value="Menu Administrativo"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="150" y="40" width="-1" height="-1"/>
+              <AbsoluteConstraints x="450" y="70" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

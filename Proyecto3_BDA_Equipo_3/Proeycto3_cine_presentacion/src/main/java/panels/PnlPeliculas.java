@@ -591,7 +591,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
 
         txtTitulo.setForeground(new java.awt.Color(0, 0, 0));
         txtTitulo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
-        pnlPeliculas.add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 180, 30));
+        pnlPeliculas.add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 280, 40));
 
         lblGeneros.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         lblGeneros.setForeground(new java.awt.Color(255, 255, 255));
@@ -605,13 +605,13 @@ public class PnlPeliculas extends javax.swing.JPanel {
 
         cmbClasificacion.setForeground(new java.awt.Color(0, 0, 0));
         cmbClasificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opcion", "AA", "A", "B", "B15", "C", "D" }));
-        pnlPeliculas.add(cmbClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 190, 40));
+        pnlPeliculas.add(cmbClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 280, 40));
 
         lblDuracion.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         lblDuracion.setForeground(new java.awt.Color(255, 255, 255));
         lblDuracion.setText("Duracion (Minutos):");
         pnlPeliculas.add(lblDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 500, -1, -1));
-        pnlPeliculas.add(spnDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, 190, 40));
+        pnlPeliculas.add(spnDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, 280, 40));
 
         btnGuardar.setBackground(new java.awt.Color(12, 93, 140));
         btnGuardar.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N

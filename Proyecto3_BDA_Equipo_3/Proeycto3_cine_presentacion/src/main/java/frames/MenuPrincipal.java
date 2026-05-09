@@ -55,8 +55,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         pnlContenido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 36)); // NOI18N
-        jLabel1.setText("Bienvenido a CineU!");
-        pnlContenido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, -1, -1));
+        jLabel1.setText("Menu Administrativo");
+        pnlContenido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
 
         mnuMiPerfil.setText("Mi Perfil");
         jMenuBar1.add(mnuMiPerfil);
