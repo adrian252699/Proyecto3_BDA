@@ -4,6 +4,7 @@
  */
 package entidades;
 
+import java.time.LocalDate;
 import org.bson.types.ObjectId;
 
 /**
@@ -14,7 +15,10 @@ public class Usuario {
     private ObjectId _id;
     private String nombre;
     private String email;
+    private String password;
     private String telefono;
+    private LocalDate fch_nacimiento;
+    
 
     public Usuario() {
     }

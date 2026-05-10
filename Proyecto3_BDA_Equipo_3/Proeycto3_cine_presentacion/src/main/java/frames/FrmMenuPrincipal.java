@@ -13,7 +13,7 @@ import panels.PnlPeliculas;
  *
  * @author jalt2
  */
-public class MenuPrincipal extends javax.swing.JFrame {
+public class FrmMenuPrincipal extends javax.swing.JFrame {
     
     private final PeliculaController controlPelicula;
     
@@ -21,7 +21,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
      * Creates new form MenuPrincipal
      * @param controlPelicula
      */
-    public MenuPrincipal(PeliculaController controlPelicula) {
+    public FrmMenuPrincipal(PeliculaController controlPelicula) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.controlPelicula = controlPelicula;
@@ -140,21 +140,22 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PeliculaController controller = new PeliculaController();
-                new MenuPrincipal(controller).setVisible(true);
+                new FrmMenuPrincipal(controller).setVisible(true);
             }
         });
     }

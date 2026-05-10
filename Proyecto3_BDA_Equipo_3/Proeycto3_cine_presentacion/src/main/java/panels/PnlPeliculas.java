@@ -589,6 +589,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
         lblTitulo.setText("Titulo:");
         pnlPeliculas.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
+        txtTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtTitulo.setForeground(new java.awt.Color(0, 0, 0));
         txtTitulo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
         pnlPeliculas.add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 280, 40));
@@ -603,6 +604,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
         lblClasificacion.setText("Clasificacion:");
         pnlPeliculas.add(lblClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, -1, -1));
 
+        cmbClasificacion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cmbClasificacion.setForeground(new java.awt.Color(0, 0, 0));
         cmbClasificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opcion", "AA", "A", "B", "B15", "C", "D" }));
         pnlPeliculas.add(cmbClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 280, 40));
@@ -611,6 +613,8 @@ public class PnlPeliculas extends javax.swing.JPanel {
         lblDuracion.setForeground(new java.awt.Color(255, 255, 255));
         lblDuracion.setText("Duracion (Minutos):");
         pnlPeliculas.add(lblDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 500, -1, -1));
+
+        spnDuracion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         pnlPeliculas.add(spnDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, 280, 40));
 
         btnGuardar.setBackground(new java.awt.Color(12, 93, 140));
@@ -650,31 +654,37 @@ public class PnlPeliculas extends javax.swing.JPanel {
         pnlGeneros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
         pnlGeneros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        chkComedia.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         chkComedia.setForeground(new java.awt.Color(255, 255, 255));
         chkComedia.setText("Comedia");
         pnlGeneros.add(chkComedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
         chkComedia.getAccessibleContext().setAccessibleParent(pnlGeneros);
 
+        chkCienciaFiccion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         chkCienciaFiccion.setForeground(new java.awt.Color(255, 255, 255));
         chkCienciaFiccion.setText("Ciencia Ficcion");
         pnlGeneros.add(chkCienciaFiccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
         chkCienciaFiccion.getAccessibleContext().setAccessibleParent(pnlGeneros);
 
+        chkTerror.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         chkTerror.setForeground(new java.awt.Color(255, 255, 255));
         chkTerror.setText("Terror");
         pnlGeneros.add(chkTerror, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
         chkTerror.getAccessibleContext().setAccessibleParent(pnlGeneros);
 
+        chkDrama.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         chkDrama.setForeground(new java.awt.Color(255, 255, 255));
         chkDrama.setText("Drama");
         pnlGeneros.add(chkDrama, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
         chkDrama.getAccessibleContext().setAccessibleParent(pnlGeneros);
 
+        chkAventura.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         chkAventura.setForeground(new java.awt.Color(255, 255, 255));
         chkAventura.setText("Aventura");
         pnlGeneros.add(chkAventura, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
         chkAventura.getAccessibleContext().setAccessibleParent(pnlGeneros);
 
+        chkAccion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         chkAccion.setForeground(new java.awt.Color(255, 255, 255));
         chkAccion.setText("Accion");
         pnlGeneros.add(chkAccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
