@@ -104,14 +104,14 @@ public class PeliculaDAO implements IPeliculaDAO{
     }
 
     @Override
-    public boolean eliminarPelicula(ObjectId _id) throws DaoException, EntityNotFoundException {
-        if (_id == null) {
+    public boolean eliminarPelicula(ObjectId id) throws DaoException, EntityNotFoundException {
+        if (id == null) {
             throw new DaoException("El id es necesario para eliminar");       
         }
         
         try {
             DeleteResult resultado =
-                    coleccion.deleteOne(eq("_id", _id));
+                    coleccion.deleteOne(eq("_id", id));
 
             if (resultado.getDeletedCount() == 0) {
                 throw new EntityNotFoundException("Pelicula no encontrada"); 
@@ -124,14 +124,14 @@ public class PeliculaDAO implements IPeliculaDAO{
     }
 
     @Override
-    public Pelicula buscarPeliculaId(ObjectId _id) throws DaoException,EntityNotFoundException {
-        if (_id == null) {
+    public Pelicula buscarPeliculaId(ObjectId id) throws DaoException,EntityNotFoundException {
+        if (id == null) {
             throw new DaoException("Id Requerido");
         }
         
         try {
             Pelicula peliculaEncontrada =
-                    coleccion.find(eq("_id", _id)).first();
+                    coleccion.find(eq("_id", id)).first();
 
             if (peliculaEncontrada == null) {
                 throw new EntityNotFoundException("Pelicula no encontrada");

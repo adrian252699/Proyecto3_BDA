@@ -14,7 +14,6 @@ import panels.login.pnlRegistro;
  * @author jalt2
  */
 public class FrmLogin extends javax.swing.JFrame {
-
     /**
      * Creates new form FrmLogin
      */

@@ -12,8 +12,6 @@ import excepciones.negocio.NegocioException;
 import interfaces.IPeliculaBO;
 import interfaces.IPeliculaDAO;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mappers.PeliculaMapper;
 import org.bson.types.ObjectId;
 
@@ -22,7 +20,6 @@ import org.bson.types.ObjectId;
  * @author jalt2
  */
 public class PeliculaBO implements IPeliculaBO{
-    
     private IPeliculaDAO peliculaDAO;
     private final PeliculaMapper mapper;
 

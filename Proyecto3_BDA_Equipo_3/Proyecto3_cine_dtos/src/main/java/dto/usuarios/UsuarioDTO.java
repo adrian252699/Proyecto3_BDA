@@ -2,24 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entidades;
+package dto.usuarios;
 
 import enums.Rol;
 import java.time.Instant;
 import java.time.LocalDate;
-import org.bson.types.ObjectId;
 
 /**
  *
  * @author jalt2
  */
-public class Usuario {
-    private ObjectId _id;
+public class UsuarioDTO {
+    //Mostrar Usuario
+    private String id;
     private String nombre;
     private String apellidoMaterno;
     private String apellidoPaterno;
     private String email;
-    private String passwordHash;
     private String telefono;
     private LocalDate fechaNacimiento;
     private Rol rol;
@@ -27,25 +26,47 @@ public class Usuario {
     private Instant createdAt;
     private Instant updatedAt;
     private Instant ultimoLogin;
-    
 
-    public Usuario() {
+    public UsuarioDTO() {
     }
 
-    public Usuario(ObjectId _id, String nombre, String apellidoMaterno, String apellidoPaterno, String email, String passwordHash, String telefono, LocalDate fechaNacimiento, Rol rol, Boolean activo, Instant createdAt, Instant updatedAt, Instant ultimoLogin) {
-        this._id = _id;
+    public UsuarioDTO(String id, String nombre, String email, String telefono) {
+        this.id = id;
         this.nombre = nombre;
-        this.apellidoMaterno = apellidoMaterno;
-        this.apellidoPaterno = apellidoPaterno;
         this.email = email;
-        this.passwordHash = passwordHash;
         this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
-        this.rol = rol;
-        this.activo = activo;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.ultimoLogin = ultimoLogin;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getApellidoMaterno() {
@@ -62,14 +83,6 @@ public class Usuario {
 
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public LocalDate getFechaNacimiento() {
@@ -119,42 +132,11 @@ public class Usuario {
     public void setUltimoLogin(Instant ultimoLogin) {
         this.ultimoLogin = ultimoLogin;
     }
-
-    public ObjectId getId() {
-        return _id;
-    }
-
-    public void setId(ObjectId _id) {
-        this._id = _id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+    
 
     @Override
     public String toString() {
-        return "Usuario{" + "_id=" + _id + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono + '}';
+        return "UsuarioDTO{" + "id=" + id + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono + '}';
     }
     
     
