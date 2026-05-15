@@ -29,7 +29,7 @@ public class PruebaUsuarios {
         RegistroUsuarioDTO dtoFallido = new RegistroUsuarioDTO("Jesus Adrian", "Tapia", "Luzanilla", "adrian@gmail.com", "adrian2504", "64499777", LocalDate.parse(fechaNacimiento));
         
         try {
-            control.guardarUsuario(dtoFallido);
+            control.guardarUsuario(dto);
         } catch (ControllerException ex) {
             throw new ControllerException("Error", ex);
         }

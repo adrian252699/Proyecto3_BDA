@@ -4,9 +4,18 @@
  */
 package frame.login;
 
+import controllers.UsuarioController;
+import controllers.factory.FabricaControllers;
+import dto.usuarios.LoginDTO;
+import dto.usuarios.UsuarioDTO;
+import enums.Rol;
+import excepciones.presentacion.ControllerException;
+import frames.MenuAdmin;
+import frames.MenuCliente;
 import java.awt.BorderLayout;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import panels.login.PnlLogin;
 import panels.login.pnlRegistro;
 
 /**
@@ -14,6 +23,7 @@ import panels.login.pnlRegistro;
  * @author jalt2
  */
 public class FrmLogin extends javax.swing.JFrame {
+    private final UsuarioController controlUsuario;
     /**
      * Creates new form FrmLogin
      */
@@ -21,6 +31,7 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
 //        mostrarPaneles(new PnlLogin());
+        this.controlUsuario = FabricaControllers.getUsuarioController();
     }
     
     private void mostrarPaneles(JPanel panel){
@@ -37,6 +48,47 @@ public class FrmLogin extends javax.swing.JFrame {
         this.pack();
         
         this.setLocationRelativeTo(null);
+    }
+    
+    private void iniciarSesion(){
+        try {
+            String correo = txtCorreo.getText().trim();
+            char[] passwordChars = txtPassword.getPassword();
+
+            String password = new String(passwordChars);
+            
+            
+
+            LoginDTO usuarioLoginDTO = new LoginDTO(correo, password);
+
+            UsuarioDTO usuarioLoggeado = controlUsuario.iniciarSesion(usuarioLoginDTO);
+            
+            Arrays.fill(passwordChars, '\0');
+            
+            JOptionPane.showMessageDialog(
+                this,
+                "Bienvenido " + usuarioLoggeado.getNombre()
+            );
+            
+            //Si el usuario es un admin
+            if (usuarioLoggeado.getRol() == Rol.ADMIN) {
+                MenuAdmin menuAdmin = new MenuAdmin(usuarioLoggeado);
+                menuAdmin.setVisible(true);
+            }else if (usuarioLoggeado.getRol() == Rol.CLIENTE) {
+                MenuCliente menuCliente = new MenuCliente(usuarioLoggeado);
+                menuCliente.setVisible(true);
+            }
+            
+            this.dispose();
+
+        } catch (ControllerException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }  
     }
 
     /**
@@ -75,6 +127,11 @@ public class FrmLogin extends javax.swing.JFrame {
 
         txtCorreo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtCorreo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
+        txtCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCorreoActionPerformed(evt);
+            }
+        });
         pnlContenidoLogin.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, 190, 40));
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -88,6 +145,11 @@ public class FrmLogin extends javax.swing.JFrame {
 
         btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnIniciarSesion.setText("INICIAR SESION");
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
+            }
+        });
         pnlContenidoLogin.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, 170, 40));
 
         btnRegistrarse.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -128,6 +190,15 @@ public class FrmLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         mostrarPaneles(new pnlRegistro());
     }//GEN-LAST:event_btnRegistrarseActionPerformed
+
+    private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorreoActionPerformed
+
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        // TODO add your handling code here:
+        iniciarSesion();
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     /**
      * @param args the command line arguments

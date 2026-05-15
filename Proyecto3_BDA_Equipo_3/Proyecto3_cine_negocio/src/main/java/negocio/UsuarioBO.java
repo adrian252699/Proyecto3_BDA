@@ -12,11 +12,15 @@ import dto.usuarios.UsuarioDTO;
 import entidades.Usuario;
 import enums.Rol;
 import excepciones.daos.DaoException;
+import excepciones.daos.EntityNotFoundException;
 import excepciones.negocio.NegocioException;
 import interfaces.IUsuarioBO;
 import interfaces.IUsuarioDAO;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mappers.UsuarioMapper;
 import utilerias.PasswordUtil;
 
@@ -86,7 +90,45 @@ public class UsuarioBO implements IUsuarioBO{
 
     @Override
     public UsuarioDTO iniciarSesion(LoginDTO usuarioLogin) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Validar DTO
+        if (usuarioLogin == null) {
+            throw new NegocioException("Datos de login requeridos");
+        }
+
+        //Validar Correo
+        validarCorreoFormato(usuarioLogin.getEmail());
+        String correo = usuarioLogin.getEmail().trim().toLowerCase();
+        
+        //Validar password
+        if (usuarioLogin.getPassword() == null || usuarioLogin.getPassword().trim().isEmpty()) {
+            throw new NegocioException("La contraseña es obligatoria");
+        }
+        
+        try {
+            Usuario usuarioEncontrado = usuarioDAO.buscarPorCorreo(correo);
+            
+            //Verificar si el usuario esta activo
+            if (!usuarioEncontrado.getActivo()) {
+                throw new NegocioException("Usuario desactivado");
+            }
+            
+            //Comparar contraseñas
+            boolean passwordCorrecta = PasswordUtil.verificar(
+                    usuarioLogin.getPassword(), 
+                    usuarioEncontrado.getPasswordHash()
+            );
+            
+            if (!passwordCorrecta) {
+                throw new NegocioException("Correo o contraseña incorrectos");
+            }
+            
+            return UsuarioMapper.toDTO(usuarioEncontrado);
+            
+        } catch (DaoException e) {
+            throw new NegocioException("Error al iniciar sesion:", e);
+        } catch (EntityNotFoundException ex) {
+            throw new NegocioException("Correo o contraseña incorrectos");
+        }
     }
 
     @Override
@@ -116,7 +158,20 @@ public class UsuarioBO implements IUsuarioBO{
 
     @Override
     public UsuarioDTO buscarPorCorreo(String correo) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Validaciones de correo
+        correo = correo.trim().toLowerCase();
+        validarCorreoFormato(correo);
+        validarCorreoExistente(correo);
+        
+        try {
+            Usuario usuarioEncontrado = usuarioDAO.buscarPorCorreo(correo);
+            return UsuarioMapper.toDTO(usuarioEncontrado);
+            
+        } catch (DaoException e) {
+            throw new NegocioException("Error al buscar usuario por correo:", e);
+        } catch (EntityNotFoundException ex) {
+            throw new NegocioException("No se encontro un usuario:", ex);
+        }
     }
 
     @Override

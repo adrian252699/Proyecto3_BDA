@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dto.usuarios.LoginDTO;
 import dto.usuarios.RegistroUsuarioDTO;
 import dto.usuarios.UsuarioDTO;
 import excepciones.negocio.NegocioException;
@@ -27,6 +28,14 @@ public class UsuarioController {
             return usuarioBO.guardarUsuario(usuarioNuevo);
         } catch (NegocioException e) {
             throw new ControllerException("Error al guardar usuario: ",e);
+        }
+    }
+    
+    public UsuarioDTO iniciarSesion(LoginDTO usuarioLoginDTO)throws ControllerException {
+        try {
+            return usuarioBO.iniciarSesion(usuarioLoginDTO);
+        } catch (NegocioException e) {
+            throw new ControllerException("Error al iniciar sesion: ",e);
         }
     }
 }

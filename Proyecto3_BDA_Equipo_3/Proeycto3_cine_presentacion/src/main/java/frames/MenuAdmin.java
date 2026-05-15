@@ -5,6 +5,9 @@
 package frames;
 
 import controllers.PeliculaController;
+import controllers.factory.FabricaControllers;
+import dto.usuarios.UsuarioDTO;
+import enums.Rol;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import panels.PnlPeliculas;
@@ -13,19 +16,27 @@ import panels.PnlPeliculas;
  *
  * @author jalt2
  */
-public class FrmMenuPrincipal extends javax.swing.JFrame {
+public class MenuAdmin extends javax.swing.JFrame {
     
     private final PeliculaController controlPelicula;
+    private final UsuarioDTO admin;
     
     /**
      * Creates new form MenuPrincipal
-     * @param controlPelicula
+     * @param admin
      */
-    public FrmMenuPrincipal(PeliculaController controlPelicula) {
+    public MenuAdmin(UsuarioDTO admin) {
+        if (admin == null) {
+            throw new IllegalArgumentException( "Administrador requerido");
+        }
+
+        if (admin.getRol() != Rol.ADMIN) {
+            throw new IllegalArgumentException("Acceso no autorizado");
+        }
         initComponents();
         this.setLocationRelativeTo(null);
-        this.controlPelicula = controlPelicula;
-        
+        this.controlPelicula = FabricaControllers.getPeliculaController();
+        this.admin = admin;  
     }
 
     
@@ -121,43 +132,6 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         this.pack();
         
         this.setLocationRelativeTo(null);
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PeliculaController controller = new PeliculaController();
-                new FrmMenuPrincipal(controller).setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
