@@ -30,12 +30,30 @@ public class UsuarioDTO {
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(String id, String nombre, String email, String telefono) {
-        this.id = id;
+    public UsuarioDTO(String nombre, String apellidoMaterno, String apellidoPaterno, String email, String telefono, LocalDate fechaNacimiento) {
         this.nombre = nombre;
+        this.apellidoMaterno = apellidoMaterno;
+        this.apellidoPaterno = apellidoPaterno;
         this.email = email;
         this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
     }
+
+    public UsuarioDTO(String id, String nombre, String apellidoMaterno, String apellidoPaterno, String email, String telefono, LocalDate fechaNacimiento, Rol rol, Boolean activo, Instant createdAt, Instant updatedAt, Instant ultimoLogin) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidoMaterno = apellidoMaterno;
+        this.apellidoPaterno = apellidoPaterno;
+        this.email = email;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.rol = rol;
+        this.activo = activo;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.ultimoLogin = ultimoLogin;
+    }
+    
 
     public String getId() {
         return id;

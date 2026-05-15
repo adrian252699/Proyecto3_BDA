@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package panels;
+package frames.admin;
 
 import controllers.PeliculaController;
+import controllers.factory.FabricaControllers;
 import dtos.PeliculaDTO;
 import excepciones.presentacion.ControllerException;
 import java.awt.BorderLayout;
@@ -28,15 +29,14 @@ public class PnlPeliculas extends javax.swing.JPanel {
     
     /**
      * Creates new form PnlPeliculas
-     * @param control
      */
-    public PnlPeliculas(PeliculaController control) {
+    public PnlPeliculas() {
         initComponents();
         this.setPreferredSize(new Dimension(1250,683));
         this.setLayout(new BorderLayout());
         this.add(pnlPeliculas, BorderLayout.CENTER);
         this.spnDuracion.setValue(1);
-        this.control = control;
+        this.control = FabricaControllers.getPeliculaController();
         
         tblPeliculas.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {

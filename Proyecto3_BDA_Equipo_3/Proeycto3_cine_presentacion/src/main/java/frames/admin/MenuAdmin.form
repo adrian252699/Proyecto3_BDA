@@ -29,14 +29,14 @@
             <Property name="text" type="java.lang.String" value="Funciones"/>
           </Properties>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuBoletos">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Boletos"/>
-          </Properties>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="mnuPagos">
           <Properties>
             <Property name="text" type="java.lang.String" value="Pagos"/>
+          </Properties>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mnuBoletos">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Boletos"/>
           </Properties>
         </Menu>
       </SubComponents>
@@ -96,6 +96,9 @@
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="36" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Menu Administrativo"/>
           </Properties>

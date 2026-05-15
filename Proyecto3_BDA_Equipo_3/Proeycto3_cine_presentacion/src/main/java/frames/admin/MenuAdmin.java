@@ -2,15 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package frames;
+package frames.admin;
 
-import controllers.PeliculaController;
 import controllers.factory.FabricaControllers;
 import dto.usuarios.UsuarioDTO;
 import enums.Rol;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import panels.PnlPeliculas;
 
 /**
  *
@@ -18,7 +16,6 @@ import panels.PnlPeliculas;
  */
 public class MenuAdmin extends javax.swing.JFrame {
     
-    private final PeliculaController controlPelicula;
     private final UsuarioDTO admin;
     
     /**
@@ -35,7 +32,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         }
         initComponents();
         this.setLocationRelativeTo(null);
-        this.controlPelicula = FabricaControllers.getPeliculaController();
+        FabricaControllers.getPeliculaController();
         this.admin = admin;  
     }
 
@@ -57,8 +54,8 @@ public class MenuAdmin extends javax.swing.JFrame {
         mnuPeliculas = new javax.swing.JMenu();
         mnuGestionPeliculas = new javax.swing.JMenuItem();
         mnuFunciones = new javax.swing.JMenu();
-        mnuBoletos = new javax.swing.JMenu();
         mnuPagos = new javax.swing.JMenu();
+        mnuBoletos = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,6 +63,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         pnlContenido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Menu Administrativo");
         pnlContenido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
 
@@ -87,11 +85,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         mnuFunciones.setText("Funciones");
         jMenuBar1.add(mnuFunciones);
 
-        mnuBoletos.setText("Boletos");
-        jMenuBar1.add(mnuBoletos);
-
         mnuPagos.setText("Pagos");
         jMenuBar1.add(mnuPagos);
+
+        mnuBoletos.setText("Boletos");
+        jMenuBar1.add(mnuBoletos);
 
         setJMenuBar(jMenuBar1);
 
@@ -115,7 +113,7 @@ public class MenuAdmin extends javax.swing.JFrame {
 
     private void mnuGestionPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuGestionPeliculasActionPerformed
         // TODO add your handling code here:
-        mostrarPanel(new PnlPeliculas(this.controlPelicula));
+        mostrarPanel(new PnlPeliculas());
     }//GEN-LAST:event_mnuGestionPeliculasActionPerformed
     
     private void mostrarPanel(JPanel panel){
