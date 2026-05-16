@@ -4,12 +4,16 @@
  */
 package factory;
 
+import daos.FuncionDAO;
 import daos.PeliculaDAO;
 import daos.UsuarioDAO;
+import interfaces.IFuncionBO;
+import interfaces.IFuncionDAO;
 import interfaces.IPeliculaBO;
 import interfaces.IPeliculaDAO;
 import interfaces.IUsuarioBO;
 import interfaces.IUsuarioDAO;
+import negocio.FuncionBO;
 import negocio.PeliculaBO;
 import negocio.UsuarioBO;
 
@@ -26,5 +30,10 @@ public class FabricaObjetosBO {
     public static IUsuarioBO crearUsuarioBO(){
         IUsuarioDAO usuarioDAO = new UsuarioDAO();
         return new UsuarioBO(usuarioDAO);
+    }
+    
+    public static IFuncionBO crearFuncionBO(){
+        IFuncionDAO funcionBO = new FuncionDAO();
+        return new FuncionBO(funcionBO);
     }
 }

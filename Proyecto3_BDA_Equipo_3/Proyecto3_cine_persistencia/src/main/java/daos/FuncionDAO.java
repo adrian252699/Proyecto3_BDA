@@ -23,6 +23,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 /**
@@ -234,6 +235,18 @@ public class FuncionDAO implements IFuncionDAO{
             );
         }
     }
+    
+    @Override
+    public List<Funcion> buscarFuncionesActivas() throws DaoException {
+        try {
+            return coleccion.find(eq("activo", true)).into(new ArrayList<>());
+        } catch (MongoException e) {
+            throw new DaoException(
+                    "No fue posible buscar las funciones activas",
+                    e
+            );
+        }
+    }
 
     @Override
     public List<Funcion> buscarFuncionesPorPeliculaYFecha(ObjectId peliculaId, LocalDate fecha) throws DaoException {
@@ -266,6 +279,49 @@ public class FuncionDAO implements IFuncionDAO{
     }
 
     @Override
+    public boolean existeFuncionEnSalaHorario(ObjectId funcionId,Integer numSala, LocalDate fecha, LocalTime hora) throws DaoException {
+        try {
+
+            if (numSala == null) {
+                throw new IllegalArgumentException(
+                        "El número de sala es obligatorio"
+                );
+            }
+
+            if (fecha == null) {
+                throw new IllegalArgumentException(
+                        "La fecha es obligatoria"
+                );
+            }
+
+            if (hora == null) {
+                throw new IllegalArgumentException(
+                        "La hora es obligatoria"
+                );
+            }
+
+            Bson filtro = Filters.and(
+                    Filters.eq("sala.numSala", numSala),
+                    Filters.eq("fecha", fecha),
+                    Filters.eq("hora", hora),
+                    Filters.ne("_id", funcionId)
+            );
+
+            long coincidencias =
+                    coleccion.countDocuments(filtro);
+
+            return coincidencias > 0;
+
+        } catch (MongoException e) {
+
+            throw new DaoException(
+                    "No fue posible verificar la función",
+                    e
+            );
+        }
+    }
+
+    @Override
     public boolean existeFuncionEnSalaHorario(Integer numSala, LocalDate fecha, LocalTime hora) throws DaoException {
         try {
 
@@ -287,17 +343,19 @@ public class FuncionDAO implements IFuncionDAO{
                 );
             }
 
-            long coincidencias = coleccion.countDocuments(
-                Filters.and(
-                        Filters.eq("sala.numSala", numSala),
-                        Filters.eq("fecha", fecha),
-                        Filters.eq("hora", hora)
-                    )
+            Bson filtro = Filters.and(
+                    Filters.eq("sala.numSala", numSala),
+                    Filters.eq("fecha", fecha),
+                    Filters.eq("hora", hora)
             );
+
+            long coincidencias =
+                    coleccion.countDocuments(filtro);
 
             return coincidencias > 0;
 
         } catch (MongoException e) {
+
             throw new DaoException(
                     "No fue posible verificar la función",
                     e

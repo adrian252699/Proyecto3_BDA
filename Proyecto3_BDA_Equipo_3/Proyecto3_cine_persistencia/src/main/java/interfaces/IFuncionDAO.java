@@ -35,5 +35,9 @@ public interface IFuncionDAO {
 
     public List<Funcion> buscarFuncionesPorPeliculaYFecha(ObjectId peliculaId, LocalDate fecha) throws DaoException;
 
+    public boolean existeFuncionEnSalaHorario(ObjectId funcionId,Integer numSala, LocalDate fecha, LocalTime hora) throws DaoException;
+    
     public boolean existeFuncionEnSalaHorario(Integer numSala, LocalDate fecha, LocalTime hora) throws DaoException;
+
+    public List<Funcion> buscarFuncionesActivas() throws DaoException;
 }
