@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dto.usuarios.ActualizarUsuarioDTO;
 import dto.usuarios.LoginDTO;
 import dto.usuarios.RegistroUsuarioDTO;
 import dto.usuarios.UsuarioDTO;
@@ -35,7 +36,23 @@ public class UsuarioController {
         try {
             return usuarioBO.iniciarSesion(usuarioLoginDTO);
         } catch (NegocioException e) {
-            throw new ControllerException("Error al iniciar sesion: ",e);
+            throw new ControllerException("No fue posible iniciar sesion: "+e.getMessage());
+        }
+    }
+    
+    public UsuarioDTO actualizarUsuario(ActualizarUsuarioDTO datosActualizar)throws ControllerException {
+        try {
+            return usuarioBO.actualizarUsuario(datosActualizar);
+        } catch (NegocioException e) {
+            throw new ControllerException("No fue posible iniciar sesion: "+e.getMessage());
+        }
+    }
+    
+    public UsuarioDTO actualizarCorreo(String id, String correo) throws ControllerException{
+        try {
+            return usuarioBO.actualizarCorreo(id, correo);
+        } catch (NegocioException e) {
+            throw new ControllerException("No fue posible actualizar el correo: "+e.getMessage());
         }
     }
 }

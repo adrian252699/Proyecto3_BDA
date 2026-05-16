@@ -6,16 +6,23 @@ package frames.clientes;
 
 import controllers.UsuarioController;
 import controllers.factory.FabricaControllers;
+import dto.usuarios.ActualizarCorreoDTO;
+import dto.usuarios.ActualizarUsuarioDTO;
+import dto.usuarios.LoginDTO;
 import dto.usuarios.UsuarioDTO;
+import excepciones.presentacion.ControllerException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 /**
  *
  * @author jalt2
  */
 public class PnlMiPerfil extends javax.swing.JPanel {
-    private final UsuarioDTO cliente;
+    private UsuarioDTO cliente;
     private final UsuarioController control;
     
     /**
@@ -33,16 +40,148 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         
     }
     
+    private void actualizarCorreo(){
+        
+        
+        
+        
+        try {
+            String correo = txtEmail.getText().trim(); 
+            String correoNuevo = txtEmailNuevo.getText().trim();
+
+            //Validar
+            if (correoNuevo == null || correoNuevo.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El correo nuevo no puede estar vacio.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );  
+                return;
+            }
+
+            if (correo.equals(correoNuevo)) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El correo nuevo no puede ser igual al correo actual.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );  
+                return;
+            }
+            
+            if (!autenticarUsuario()) {
+                return;
+            }
+            
+            UsuarioDTO usuarioCorreoActualizado = control.actualizarCorreo(cliente.getId(), correo);
+            
+            this.cliente = usuarioCorreoActualizado;
+            
+            cargarCamposCliente();
+            
+            JOptionPane.showMessageDialog(this, "Datos actualizados correctamente.");
+            
+        } catch (ControllerException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );    
+        }
+    }
+    
     private void cargarCamposCliente(){
         //Datos Personales
         txtNombre.setText(cliente.getNombre());
         txtApellidoMaterno.setText(cliente.getApellidoMaterno());
         txtApellidoPaterno.setText(cliente.getApellidoPaterno());
-        fchNacimiento.setDate(cliente.getFechaNacimiento());
+        datePickerFchNacimiento.setDate(cliente.getFechaNacimiento());
         txtTelefono.setText(cliente.getTelefono());
         
         //Datos Acceso
         txtEmail.setText(cliente.getEmail()); 
+    }
+    
+    private void actualizarDatosPersonales(){
+        try {
+            //Guardar texto de los campos despues de habilitarlos
+            String nombre = txtNombre.getText().trim();
+            String apellidoPaterno = txtApellidoPaterno.getText().trim();
+            String apellidoMaterno = txtApellidoMaterno.getText().trim();
+            String telefono = txtTelefono.getText().trim();
+            LocalDate fchNacimiento = this.datePickerFchNacimiento.getDate();
+
+            if (nombre.isEmpty()||apellidoPaterno.isEmpty()||telefono.isEmpty()||fchNacimiento==null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Ningun campo obligatorio debe ir vacio.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE
+                );  
+                return;
+            }
+            
+            if (!autenticarUsuario()) {
+                return;
+            }
+            
+            //Guardar nuevos datos
+            ActualizarUsuarioDTO datosActualizar = new ActualizarUsuarioDTO(cliente.getId(), nombre, apellidoMaterno, apellidoPaterno, telefono, fchNacimiento);
+            UsuarioDTO usuarioActualizado = control.actualizarUsuario(datosActualizar);
+            this.cliente = usuarioActualizado;
+            
+            cargarCamposCliente();
+            
+            JOptionPane.showMessageDialog(this, "Datos actualizados correctamente.");
+ 
+        } catch (ControllerException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );  
+            
+        }
+    }
+    
+    private boolean autenticarUsuario(){
+        JPasswordField passwordField =
+                new JPasswordField();
+
+        int opcion =
+                JOptionPane.showConfirmDialog(
+                        this,
+                        passwordField,
+                        "Ingrese su contraseña",
+                        JOptionPane.OK_CANCEL_OPTION
+                );
+
+        if (opcion != JOptionPane.OK_OPTION) {
+            return false;
+        }
+
+        String password = new String(passwordField.getPassword());
+
+        try {
+
+            LoginDTO loginDTO = new LoginDTO(cliente.getEmail(), password);
+
+            control.iniciarSesion(loginDTO);
+
+            return true;
+
+        } catch (ControllerException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Contraseña incorrecta"
+            );
+
+            return false;
+        }
     }
 
     /**
@@ -54,6 +193,9 @@ public class PnlMiPerfil extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         pnlMiPerfil = new javax.swing.JPanel();
         pnlDatosPersonales = new javax.swing.JPanel();
         txtApellidoPaterno = new javax.swing.JTextField();
@@ -62,7 +204,7 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblNombre = new javax.swing.JLabel();
         txtApellidoMaterno = new javax.swing.JTextField();
         lblApellidoMaterno = new javax.swing.JLabel();
-        fchNacimiento = new com.github.lgooddatepicker.components.DatePicker();
+        datePickerFchNacimiento = new com.github.lgooddatepicker.components.DatePicker();
         lblFechaNacimiento = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         lblTelefono = new javax.swing.JLabel();
@@ -72,19 +214,27 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblEmail = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         lblPassword = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnActualizarCorreo = new javax.swing.JButton();
+        btnActualizarPassword = new javax.swing.JButton();
         lblEmailNuevo = new javax.swing.JLabel();
         txtEmailNuevo = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
         pnlMiPerfil.setBackground(new java.awt.Color(9, 79, 138));
         pnlMiPerfil.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        pnlDatosPersonales.setBackground(new java.awt.Color(9, 79, 138));
         pnlDatosPersonales.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos Personales", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
         pnlDatosPersonales.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtApellidoPaterno.setEnabled(false);
+        txtApellidoPaterno.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtApellidoPaterno.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosPersonales.add(txtApellidoPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 260, 30));
 
         lblApellidoPaterno.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -92,7 +242,8 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblApellidoPaterno.setText("Apellido Paterno:");
         pnlDatosPersonales.add(lblApellidoPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
 
-        txtNombre.setEnabled(false);
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosPersonales.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 260, 30));
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -100,7 +251,8 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblNombre.setText("Nombre:");
         pnlDatosPersonales.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
-        txtApellidoMaterno.setEnabled(false);
+        txtApellidoMaterno.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtApellidoMaterno.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosPersonales.add(txtApellidoMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 270, 30));
 
         lblApellidoMaterno.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -108,15 +260,17 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblApellidoMaterno.setText("Apellido Materno:");
         pnlDatosPersonales.add(lblApellidoMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 30, -1, -1));
 
-        fchNacimiento.setEnabled(false);
-        pnlDatosPersonales.add(fchNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 260, 30));
+        datePickerFchNacimiento.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        datePickerFchNacimiento.setForeground(new java.awt.Color(0, 0, 0));
+        pnlDatosPersonales.add(datePickerFchNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 260, 30));
 
         lblFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFechaNacimiento.setForeground(new java.awt.Color(255, 255, 255));
         lblFechaNacimiento.setText("Fecha Nacimiento:");
         pnlDatosPersonales.add(lblFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, -1, -1));
 
-        txtTelefono.setEnabled(false);
+        txtTelefono.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtTelefono.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosPersonales.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 180, 270, 30));
 
         lblTelefono.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -124,17 +278,25 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblTelefono.setText("Telefono (10 digitos):");
         pnlDatosPersonales.add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 150, -1, -1));
 
+        btnActualizarDatosPersonales.setText("Editar Datos Personales");
+        btnActualizarDatosPersonales.setBackground(new java.awt.Color(12, 93, 140));
         btnActualizarDatosPersonales.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnActualizarDatosPersonales.setForeground(new java.awt.Color(255, 255, 255));
-        btnActualizarDatosPersonales.setText("Editar Datos Personales");
+        btnActualizarDatosPersonales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarDatosPersonalesActionPerformed(evt);
+            }
+        });
         pnlDatosPersonales.add(btnActualizarDatosPersonales, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 280, -1, 30));
 
         pnlMiPerfil.add(pnlDatosPersonales, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 970, 330));
 
+        pnlDatosAcesso.setBackground(new java.awt.Color(9, 79, 138));
         pnlDatosAcesso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Acesso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
         pnlDatosAcesso.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtEmail.setEnabled(false);
+        txtEmail.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtEmail.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosAcesso.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 260, 30));
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -142,7 +304,8 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblEmail.setText("E-mail:");
         pnlDatosAcesso.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
 
-        txtPassword.setEnabled(false);
+        txtPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtPassword.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosAcesso.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 80, 280, 30));
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -150,22 +313,30 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         lblPassword.setText("Contraseña nueva:");
         pnlDatosAcesso.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 50, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Actualizar Correo");
-        pnlDatosAcesso.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, 30));
+        btnActualizarCorreo.setText("Actualizar Correo");
+        btnActualizarCorreo.setBackground(new java.awt.Color(12, 93, 140));
+        btnActualizarCorreo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizarCorreo.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizarCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarCorreoActionPerformed(evt);
+            }
+        });
+        pnlDatosAcesso.add(btnActualizarCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, 30));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cambiar Contraseña");
-        pnlDatosAcesso.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 130, -1, 30));
+        btnActualizarPassword.setText("Cambiar Contraseña");
+        btnActualizarPassword.setBackground(new java.awt.Color(12, 93, 140));
+        btnActualizarPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizarPassword.setForeground(new java.awt.Color(255, 255, 255));
+        pnlDatosAcesso.add(btnActualizarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 130, -1, 30));
 
         lblEmailNuevo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmailNuevo.setForeground(new java.awt.Color(255, 255, 255));
         lblEmailNuevo.setText("E-mail nuevo:");
         pnlDatosAcesso.add(lblEmailNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, -1, -1));
 
-        txtEmailNuevo.setEnabled(false);
+        txtEmailNuevo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtEmailNuevo.setForeground(new java.awt.Color(0, 0, 0));
         pnlDatosAcesso.add(txtEmailNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 260, 30));
 
         pnlMiPerfil.add(pnlDatosAcesso, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 460, 970, 180));
@@ -187,13 +358,26 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnActualizarDatosPersonalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDatosPersonalesActionPerformed
+        // TODO add your handling code here:
+        actualizarDatosPersonales();
+    }//GEN-LAST:event_btnActualizarDatosPersonalesActionPerformed
+
+    private void btnActualizarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarCorreoActionPerformed
+        // TODO add your handling code here:
+        actualizarCorreo();
+    }//GEN-LAST:event_btnActualizarCorreoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarCorreo;
     private javax.swing.JButton btnActualizarDatosPersonales;
-    private com.github.lgooddatepicker.components.DatePicker fchNacimiento;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnActualizarPassword;
+    private com.github.lgooddatepicker.components.DatePicker datePickerFchNacimiento;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel lblApellidoMaterno;
     private javax.swing.JLabel lblApellidoPaterno;
     private javax.swing.JLabel lblEmail;

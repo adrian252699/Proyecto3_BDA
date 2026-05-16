@@ -29,7 +29,7 @@ public class ActualizarUsuarioDTO {
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
     }
-
+    
     public String getId() {
         return id;
     }

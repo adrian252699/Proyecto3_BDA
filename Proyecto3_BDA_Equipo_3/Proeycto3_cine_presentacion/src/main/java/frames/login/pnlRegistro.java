@@ -33,8 +33,6 @@ public class PnlRegistro extends javax.swing.JPanel {
     public PnlRegistro(FrmLogin frmLogin) {
         initComponents();
         this.control = FabricaControllers.getUsuarioController();
-        limpiarCampos();
-        limpiarBordes();
         this.frmLogin = frmLogin;
         
     }
@@ -292,7 +290,7 @@ public class PnlRegistro extends javax.swing.JPanel {
         }
     }
     
-    private void limpiarCampos(){
+    public void limpiarCampos(){
         txtNombre.setText("");
         txtApellidoPaterno.setText("");
         txtApellidoMaterno.setText("");
@@ -350,7 +348,7 @@ public class PnlRegistro extends javax.swing.JPanel {
         );
     }
 
-    private void limpiarBordes(){
+    public void limpiarBordes(){
         txtNombre.setBorder(
                 UIManager.getBorder(
                         "TextField.border"
@@ -497,13 +495,13 @@ public class PnlRegistro extends javax.swing.JPanel {
         jLabel5.setText("E-mail:");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
 
+        jLabel9.setText("Telefono (10 digitos):");
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Telefono (10 digitos):");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 60, -1, -1));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, -1, -1));
 
         txtTelefono.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(7, 58, 87), 2, true));
-        jPanel2.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 200, 30));
+        jPanel2.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, 200, 30));
 
         pnlContenidoRegistro.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 510, 180));
 

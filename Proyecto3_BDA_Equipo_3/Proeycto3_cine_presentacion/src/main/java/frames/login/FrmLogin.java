@@ -27,39 +27,34 @@ public class FrmLogin extends javax.swing.JFrame {
     }
     
     private void inicializarPanels() {
-
-        // Crear CardLayout
         cardLayout = new CardLayout();
 
-        // Asignarlo al panel contenedor
         pnlContenido.setLayout(cardLayout);
 
-        // Crear panels
         pnlLogin = new PnlLogin(this);
 
         pnlRegistro = new PnlRegistro(this);
 
-        // Agregarlos al contenedor
         pnlContenido.add(
                 pnlLogin,
                 "LOGIN"
         );
 
-        pnlContenido.add(
-                pnlRegistro,
-                "REGISTRO"
-        );
+        pnlContenido.add(pnlRegistro,"REGISTRO");
 
-        // Mostrar login inicialmente
         mostrarPanelLogin();
     }
+
     
     public void mostrarPanelLogin(){
         cardLayout.show(pnlContenido,"LOGIN");
     }
     
     public void mostrarPanelRegistro() {
+        pnlRegistro.limpiarCampos();
+        pnlRegistro.limpiarBordes();
         cardLayout.show(pnlContenido,"REGISTRO");
+
     }
 
     /**
@@ -79,11 +74,11 @@ public class FrmLogin extends javax.swing.JFrame {
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 613, Short.MAX_VALUE)
+            .addGap(0, 569, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGap(0, 864, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

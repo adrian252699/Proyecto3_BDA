@@ -47,17 +47,46 @@ public class PnlLogin extends javax.swing.JPanel {
 
             String password = new String(passwordChars);
             
+            if (correo.trim().isEmpty() && password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Rellene todos los campos para iniciar sesion.",
+                        "Datos Faltantes",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                return;
+            }
             
+            if (correo.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Ingrese un correo.",
+                        "Dato Faltante",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                return;
+            }
+            
+            if (password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Ingrese una contraseña.",
+                        "Dato Faltante",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                return;
+            }
 
             LoginDTO usuarioLoginDTO = new LoginDTO(correo, password);
 
             UsuarioDTO usuarioLoggeado = controlUsuario.iniciarSesion(usuarioLoginDTO);
             
+            
             Arrays.fill(passwordChars, '\0');
             
             JOptionPane.showMessageDialog(
                 this,
-                "Bienvenido " + usuarioLoggeado.getNombre()
+                "Bienvenid@ " + usuarioLoggeado.getNombre()
             );
             
             //Si el usuario es un admin
@@ -69,14 +98,14 @@ public class PnlLogin extends javax.swing.JPanel {
                 menuCliente.setVisible(true);
             }
             
-            
+            frmLogin.dispose();
 
         } catch (ControllerException e) {
             JOptionPane.showMessageDialog(
                 this,
                 e.getMessage(),
                 "Error",
-                JOptionPane.ERROR_MESSAGE
+                JOptionPane.INFORMATION_MESSAGE
             );
         }  
     }
@@ -92,6 +121,7 @@ public class PnlLogin extends javax.swing.JPanel {
         txtPassword = new javax.swing.JPasswordField();
         btnIniciarSesion = new javax.swing.JButton();
         btnRegistrarse = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
 
         pnlContenidoLogin.setBackground(new java.awt.Color(9, 79, 138));
         pnlContenidoLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -133,14 +163,25 @@ public class PnlLogin extends javax.swing.JPanel {
         });
         pnlContenidoLogin.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, 170, 40));
 
-        btnRegistrarse.setText("REGISTRARSE");
         btnRegistrarse.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnRegistrarse.setText("REGISTRARSE");
         btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarseActionPerformed(evt);
             }
         });
         pnlContenidoLogin.add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 580, 170, 40));
+
+        btnSalir.setBackground(new java.awt.Color(255, 51, 51));
+        btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        pnlContenidoLogin.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 710, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -150,7 +191,9 @@ public class PnlLogin extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenidoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContenidoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -168,10 +211,16 @@ public class PnlLogin extends javax.swing.JPanel {
         frmLogin.mostrarPanelRegistro();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        frmLogin.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JButton btnRegistrarse;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblIniciarSesion;
     private javax.swing.JLabel lblPassword;

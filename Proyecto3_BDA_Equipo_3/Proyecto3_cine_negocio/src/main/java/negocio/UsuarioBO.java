@@ -16,12 +16,12 @@ import excepciones.daos.EntityNotFoundException;
 import excepciones.negocio.NegocioException;
 import interfaces.IUsuarioBO;
 import interfaces.IUsuarioDAO;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mappers.UsuarioMapper;
+import org.bson.types.ObjectId;
 import utilerias.PasswordUtil;
 
 /**
@@ -133,8 +133,74 @@ public class UsuarioBO implements IUsuarioBO{
 
     @Override
     public UsuarioDTO actualizarUsuario(ActualizarUsuarioDTO usuario) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        if (usuario==null) {
+            throw new NegocioException("El usuario no puede estar vacio");
+        }
+        
+        if (usuario.getId() == null || usuario.getId().trim().isEmpty()) {
+            throw new NegocioException( "El id del usuario es obligatorio");
+        }
+        
+        if (usuario.getNombre()== null || usuario.getNombre().trim().isEmpty()) {
+            throw new NegocioException("El nombre es obligatorio");
+        }
+        
+        if (usuario.getNombre().trim().length() > 50){
+            throw new NegocioException("La longitud maxima del nombre es 50 caracteres");
+        }
+        
+        if (usuario.getApellidoPaterno()==null || usuario.getApellidoPaterno().trim().isEmpty()) {
+            throw new NegocioException("El apellido paterno es obligatorio");
+        }
+        
+        if (usuario.getApellidoPaterno().trim().length() > 50) {
+            throw new NegocioException("La longitud maxima del apellido paterno es 50 caracteres");
+        }
+        
+        //Apellido materno (Opcional)
+        if (usuario.getApellidoMaterno() != null && usuario.getApellidoMaterno().trim().length() > 50) {
+            throw new NegocioException("La longitud maxima del apellido materno es 50 caracteres");
+        }
+        
+        validarTelefono(usuario.getTelefono());
+        
+        if (usuario.getFechaNacimiento() == null) {
+            throw new NegocioException("La fecha de nacimiento es obligatoria");
+        }
+        
+        //Fecha de nacimiento valida (una fecha despues de la actual)
+        if (usuario.getFechaNacimiento().isAfter(LocalDate.now())) {
+            throw new NegocioException("La fecha de nacimiento no puede ser mayor a la actual");
+        }
+        
+        //Edad minima de 13 años
+        if (usuario.getFechaNacimiento().isAfter(LocalDate.now().minusYears(13))) {
+            throw new NegocioException("El usuario debe ser mayor de 13 años");
+        }
+        
+        String nombre = usuario.getNombre().trim();
+
+        String apellidoPaterno = usuario.getApellidoPaterno().trim();
+
+        String apellidoMaterno = usuario.getApellidoMaterno() == null ? null : usuario.getApellidoMaterno().trim();
+        
+        try {
+            usuario.setNombre(nombre);
+
+            usuario.setApellidoPaterno(apellidoPaterno);
+
+            usuario.setApellidoMaterno(apellidoMaterno);
+            
+            Usuario usuarioEntidad = UsuarioMapper.toEntity(usuario);
+            Usuario usuarioActualizado = usuarioDAO.actualizarUsuario(usuarioEntidad);
+            
+            return UsuarioMapper.toDTO(usuarioActualizado);
+        } catch (DaoException e) {
+            throw new NegocioException("Error al actualizar usuario:", e);
+        }catch (EntityNotFoundException ex) {
+            throw new NegocioException(ex.getMessage());
+        }
+    }   
 
     @Override
     public UsuarioDTO actualizarPassword(String id, ActualizarPasswordDTO password) throws NegocioException {
@@ -143,7 +209,40 @@ public class UsuarioBO implements IUsuarioBO{
 
     @Override
     public UsuarioDTO actualizarCorreo(String id, String correo) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ObjectId objectId;
+        
+        try {
+            if (id == null || id.trim().isEmpty()) {
+                throw new NegocioException( "El id del usuario es obligatorio");
+            }
+            
+            if (correo == null || correo.trim().isEmpty()) {
+                throw new NegocioException("El correo es obligatorio");
+            }
+            
+            try {
+                objectId = new ObjectId(id);
+            } catch (IllegalArgumentException e) {
+                throw new NegocioException("Id inválido");
+            }
+
+            correo = correo.trim().toLowerCase();
+
+            validarCorreoFormato(correo);
+            
+            
+            Usuario usuarioActual = usuarioDAO.buscarPorId(objectId);
+            
+            if (!usuarioActual.getEmail().equalsIgnoreCase(correo)) {
+                validarCorreoExistente(correo);
+            }
+            Usuario usuarioActualizado = usuarioDAO.actualizarCorreo(objectId, correo);
+            return UsuarioMapper.toDTO(usuarioActualizado);
+        } catch (DaoException e) {
+            throw new NegocioException("Error al actualizar el correo:", e);
+        } catch (EntityNotFoundException ex) {
+            throw new NegocioException(ex.getMessage());
+        } 
     }
 
     @Override

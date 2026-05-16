@@ -6,15 +6,20 @@ package frames.clientes;
 
 import dto.usuarios.UsuarioDTO;
 import enums.Rol;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import frames.login.FrmLogin;
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jalt2
  */
 public class MenuCliente extends javax.swing.JFrame {
-    private final UsuarioDTO cliente;
+    private UsuarioDTO cliente;
+    private CardLayout cardLayout;
+    private PnlMiPerfil pnlMiPerfil;
+    private PnlInicio pnlInicio;
+    
     /**
      * Creates new form MenuCliente
      * @param cliente
@@ -30,24 +35,47 @@ public class MenuCliente extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.cliente = cliente;
-        this.lblBienvenido.setText("Bienvenido " + cliente.getNombre());
+        cardLayout = new CardLayout();
+        pnlContenido.setLayout(cardLayout);
+        inicializarPanels();
         
     }
     
-    private void mostrarPanel(JPanel panel){
-        pnlContenido.removeAll();
+    private void inicializarPanels() {
+        cardLayout = new CardLayout();
+
+        pnlContenido.setLayout(cardLayout);
+
+        pnlInicio = new PnlInicio(cliente);
+
+        pnlMiPerfil = new PnlMiPerfil(cliente);
+
+        pnlContenido.add(pnlInicio, "INICIO");
+
+        pnlContenido.add(pnlMiPerfil,"MI_PERFIL");
+
+        mostrarInicio();
+    }
+    
+    private void  mostrarInicio(){
+        cardLayout.show(pnlContenido, "INICIO");
+    }
+    
+    private void cerrarSesion(){
+        int opcion = JOptionPane.showConfirmDialog(this,"¿Desea cerrar sesión?","Cerrar sesión",JOptionPane.YES_NO_OPTION);
         
-        pnlContenido.setLayout(new BorderLayout());
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
         
-        pnlContenido.add(panel,BorderLayout.CENTER);
+        //Borrar usuarioLoggeado
+        this.cliente = null;
         
-        pnlContenido.revalidate();
+        FrmLogin login = new FrmLogin();
         
-        pnlContenido.repaint();
+        login.setVisible(true);
         
-        this.pack();
-        
-        this.setLocationRelativeTo(null);
+        this.dispose();
     }
 
     /**
@@ -61,11 +89,14 @@ public class MenuCliente extends javax.swing.JFrame {
 
         scrPanel = new javax.swing.JScrollPane();
         pnlContenido = new javax.swing.JPanel();
-        lblBienvenido = new javax.swing.JLabel();
         mnuBar = new javax.swing.JMenuBar();
+        mnuInicio = new javax.swing.JMenu();
+        btnIncio = new javax.swing.JMenuItem();
         mnuMiPerfil = new javax.swing.JMenu();
         btnMiPerfil = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        mnuCerrarSesion = new javax.swing.JMenu();
+        btnCerrarSesion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,13 +104,19 @@ public class MenuCliente extends javax.swing.JFrame {
 
         pnlContenido.setBackground(new java.awt.Color(9, 79, 138));
         pnlContenido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblBienvenido.setFont(new java.awt.Font("Verdana", 1, 36)); // NOI18N
-        lblBienvenido.setForeground(new java.awt.Color(255, 255, 255));
-        lblBienvenido.setText("Bienvenido");
-        pnlContenido.add(lblBienvenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, -1, -1));
-
         scrPanel.setViewportView(pnlContenido);
+
+        mnuInicio.setText("Inicio");
+
+        btnIncio.setText("Volver al inicio");
+        btnIncio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncioActionPerformed(evt);
+            }
+        });
+        mnuInicio.add(btnIncio);
+
+        mnuBar.add(mnuInicio);
 
         mnuMiPerfil.setText("Mi Perfil");
 
@@ -96,6 +133,18 @@ public class MenuCliente extends javax.swing.JFrame {
         jMenu2.setText("Peliculas");
         mnuBar.add(jMenu2);
 
+        mnuCerrarSesion.setText("Cerrar Sesion");
+
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        mnuCerrarSesion.add(btnCerrarSesion);
+
+        mnuBar.add(mnuCerrarSesion);
+
         setJMenuBar(mnuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -106,7 +155,9 @@ public class MenuCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(scrPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 7, Short.MAX_VALUE))
         );
 
         pack();
@@ -114,15 +165,28 @@ public class MenuCliente extends javax.swing.JFrame {
 
     private void btnMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiPerfilActionPerformed
         // TODO add your handling code here:
-        mostrarPanel(new PnlMiPerfil(cliente));
+        cardLayout.show(pnlContenido, "MI_PERFIL");
     }//GEN-LAST:event_btnMiPerfilActionPerformed
+
+    private void btnIncioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncioActionPerformed
+        // TODO add your handling code here:
+        mostrarInicio();
+    }//GEN-LAST:event_btnIncioActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        cerrarSesion();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnCerrarSesion;
+    private javax.swing.JMenuItem btnIncio;
     private javax.swing.JMenuItem btnMiPerfil;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JLabel lblBienvenido;
     private javax.swing.JMenuBar mnuBar;
+    private javax.swing.JMenu mnuCerrarSesion;
+    private javax.swing.JMenu mnuInicio;
     private javax.swing.JMenu mnuMiPerfil;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JScrollPane scrPanel;
