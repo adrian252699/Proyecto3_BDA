@@ -13,7 +13,6 @@ import excepciones.presentacion.ControllerException;
 import frames.admin.MenuAdmin;
 import frames.clientes.MenuCliente;
 import java.util.Arrays;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +30,7 @@ public class PnlLogin extends javax.swing.JPanel {
         initComponents();
         this.controlUsuario = FabricaControllers.getUsuarioController();
         this.frmLogin = frmLogin;
+        
     }
 
     /**
@@ -124,6 +124,7 @@ public class PnlLogin extends javax.swing.JPanel {
         btnSalir = new javax.swing.JButton();
 
         pnlContenidoLogin.setBackground(new java.awt.Color(9, 79, 138));
+        pnlContenidoLogin.setPreferredSize(null);
         pnlContenidoLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -181,19 +182,17 @@ public class PnlLogin extends javax.swing.JPanel {
                 btnSalirActionPerformed(evt);
             }
         });
-        pnlContenidoLogin.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 710, -1, -1));
+        pnlContenidoLogin.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 710, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenidoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
+            .addComponent(pnlContenidoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlContenidoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(pnlContenidoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

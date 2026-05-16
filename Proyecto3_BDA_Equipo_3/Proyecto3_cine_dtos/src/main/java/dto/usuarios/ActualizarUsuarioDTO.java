@@ -17,18 +17,22 @@ public class ActualizarUsuarioDTO {
     private String apellidoPaterno;
     private String telefono;
     private LocalDate fechaNacimiento;
+    private String passwordActual;
 
     public ActualizarUsuarioDTO() {
     }
 
-    public ActualizarUsuarioDTO(String id, String nombre, String apellidoMaterno, String apellidoPaterno, String telefono, LocalDate fechaNacimiento) {
+    public ActualizarUsuarioDTO(String id, String nombre, String apellidoMaterno, String apellidoPaterno, String telefono, LocalDate fechaNacimiento, String passwordActual) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoMaterno = apellidoMaterno;
         this.apellidoPaterno = apellidoPaterno;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
+        this.passwordActual = passwordActual;
     }
+
+    
     
     public String getId() {
         return id;
@@ -76,6 +80,14 @@ public class ActualizarUsuarioDTO {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getPasswordActual() {
+        return passwordActual;
+    }
+
+    public void setPasswordActual(String passwordActual) {
+        this.passwordActual = passwordActual;
     }
     
     

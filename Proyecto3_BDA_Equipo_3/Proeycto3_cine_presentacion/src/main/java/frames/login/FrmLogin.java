@@ -24,6 +24,7 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         inicializarPanels();
+        pack();
     }
     
     private void inicializarPanels() {

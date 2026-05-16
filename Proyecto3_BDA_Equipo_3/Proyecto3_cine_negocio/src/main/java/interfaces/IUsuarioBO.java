@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import dto.usuarios.ActualizarCorreoDTO;
 import dto.usuarios.ActualizarPasswordDTO;
 import dto.usuarios.ActualizarUsuarioDTO;
 import dto.usuarios.LoginDTO;
@@ -25,7 +26,7 @@ public interface IUsuarioBO {
     
     public UsuarioDTO actualizarPassword(String id, ActualizarPasswordDTO password)throws NegocioException;
     
-    public UsuarioDTO actualizarCorreo(String id, String correo)throws NegocioException;
+    public UsuarioDTO actualizarCorreo(String id, ActualizarCorreoDTO correoDTO)throws NegocioException;
     
     public boolean desactivarUsuario(String id)throws NegocioException;
     

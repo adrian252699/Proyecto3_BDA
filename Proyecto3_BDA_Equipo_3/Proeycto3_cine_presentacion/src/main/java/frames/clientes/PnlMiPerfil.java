@@ -7,6 +7,7 @@ package frames.clientes;
 import controllers.UsuarioController;
 import controllers.factory.FabricaControllers;
 import dto.usuarios.ActualizarCorreoDTO;
+import dto.usuarios.ActualizarPasswordDTO;
 import dto.usuarios.ActualizarUsuarioDTO;
 import dto.usuarios.LoginDTO;
 import dto.usuarios.UsuarioDTO;
@@ -14,6 +15,9 @@ import excepciones.presentacion.ControllerException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -40,11 +44,51 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         
     }
     
+    private void actualizarPassword(){
+        char[] passwordChars = txtPassword.getPassword();
+        String passwordNueva = new String(passwordChars);
+        Arrays.fill(passwordChars, '\0');
+        
+        if (passwordNueva.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "La contraseña nueva no puede estar vacia.",
+                "Error",
+                JOptionPane.WARNING_MESSAGE
+            );  
+            return;
+        }
+        
+        String passwordActual = autenticarUsuario();
+        
+        if (passwordActual==null) {
+            return;
+        }
+        
+        //Recuperar la contraseña ingresada para autenticarse
+        ActualizarPasswordDTO passwordDTO = new ActualizarPasswordDTO(passwordActual, passwordNueva);
+        
+        try {
+            //Actualizar password
+            UsuarioDTO usuarioActualizado = control.actualizarPassword(cliente.getId(), passwordDTO);
+            
+            this.cliente = usuarioActualizado;
+            
+            txtPassword.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Contraseña actualizada correctamente.");
+            
+        } catch (ControllerException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            ); 
+        }
+    }
+    
     private void actualizarCorreo(){
-        
-        
-        
-        
         try {
             String correo = txtEmail.getText().trim(); 
             String correoNuevo = txtEmailNuevo.getText().trim();
@@ -70,17 +114,25 @@ public class PnlMiPerfil extends javax.swing.JPanel {
                 return;
             }
             
-            if (!autenticarUsuario()) {
+            String passwordActual = autenticarUsuario();
+            
+            if (passwordActual==null) {
                 return;
             }
             
-            UsuarioDTO usuarioCorreoActualizado = control.actualizarCorreo(cliente.getId(), correo);
+            ActualizarCorreoDTO correoDTO = new ActualizarCorreoDTO(correoNuevo, passwordActual);
+            
+            
+            
+            UsuarioDTO usuarioCorreoActualizado = control.actualizarCorreo(cliente.getId(), correoDTO);
             
             this.cliente = usuarioCorreoActualizado;
             
             cargarCamposCliente();
             
-            JOptionPane.showMessageDialog(this, "Datos actualizados correctamente.");
+            txtEmailNuevo.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Correo actualizado correctamente.");
             
         } catch (ControllerException e) {
             JOptionPane.showMessageDialog(
@@ -123,12 +175,14 @@ public class PnlMiPerfil extends javax.swing.JPanel {
                 return;
             }
             
-            if (!autenticarUsuario()) {
+            String passwordActual = autenticarUsuario();
+            
+            if (passwordActual==null) {
                 return;
             }
             
             //Guardar nuevos datos
-            ActualizarUsuarioDTO datosActualizar = new ActualizarUsuarioDTO(cliente.getId(), nombre, apellidoMaterno, apellidoPaterno, telefono, fchNacimiento);
+            ActualizarUsuarioDTO datosActualizar = new ActualizarUsuarioDTO(cliente.getId(), nombre, apellidoMaterno, apellidoPaterno, telefono, fchNacimiento, passwordActual);
             UsuarioDTO usuarioActualizado = control.actualizarUsuario(datosActualizar);
             this.cliente = usuarioActualizado;
             
@@ -147,41 +201,37 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         }
     }
     
-    private boolean autenticarUsuario(){
-        JPasswordField passwordField =
-                new JPasswordField();
+    private String autenticarUsuario() {
 
-        int opcion =
-                JOptionPane.showConfirmDialog(
-                        this,
-                        passwordField,
-                        "Ingrese su contraseña",
-                        JOptionPane.OK_CANCEL_OPTION
-                );
+        JPasswordField passwordField = new JPasswordField();
+
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                passwordField,
+                "Ingrese su contraseña actual",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
 
         if (opcion != JOptionPane.OK_OPTION) {
-            return false;
+            return null;
         }
 
         String password = new String(passwordField.getPassword());
 
-        try {
-
-            LoginDTO loginDTO = new LoginDTO(cliente.getEmail(), password);
-
-            control.iniciarSesion(loginDTO);
-
-            return true;
-
-        } catch (ControllerException e) {
+        if (password.trim().isEmpty()) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Contraseña incorrecta"
+                    "La contraseña es obligatoria.",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE
             );
 
-            return false;
+            return null;
         }
+
+        return password;
     }
 
     /**
@@ -328,6 +378,11 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         btnActualizarPassword.setBackground(new java.awt.Color(12, 93, 140));
         btnActualizarPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnActualizarPassword.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizarPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarPasswordActionPerformed(evt);
+            }
+        });
         pnlDatosAcesso.add(btnActualizarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 130, -1, 30));
 
         lblEmailNuevo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -367,6 +422,11 @@ public class PnlMiPerfil extends javax.swing.JPanel {
         // TODO add your handling code here:
         actualizarCorreo();
     }//GEN-LAST:event_btnActualizarCorreoActionPerformed
+
+    private void btnActualizarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarPasswordActionPerformed
+        // TODO add your handling code here:
+        actualizarPassword();
+    }//GEN-LAST:event_btnActualizarPasswordActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
