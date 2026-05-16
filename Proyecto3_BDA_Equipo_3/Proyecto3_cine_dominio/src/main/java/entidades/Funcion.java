@@ -6,7 +6,9 @@ package entidades;
 
 import embebidos.Asiento;
 import embebidos.Sala;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
@@ -19,13 +21,16 @@ public class Funcion {
     private ObjectId peliculaId;
     private Sala sala;
     private LocalDate fecha;
-    private String hora;
+    private LocalTime hora;
     private ArrayList<Asiento> asientos;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private boolean activo;
 
     public Funcion() {
     }
 
-    public Funcion(ObjectId _id, ObjectId peliculaId, Sala sala, LocalDate fecha, String hora, ArrayList<Asiento> asientos) {
+    public Funcion(ObjectId _id, ObjectId peliculaId, Sala sala, LocalDate fecha, LocalTime hora, ArrayList<Asiento> asientos) {
         this._id = _id;
         this.peliculaId = peliculaId;
         this.sala = sala;
@@ -33,6 +38,27 @@ public class Funcion {
         this.hora = hora;
         this.asientos = asientos;
     }
+
+    public Funcion(ObjectId _id, ObjectId peliculaId, Sala sala, LocalDate fecha, LocalTime hora, ArrayList<Asiento> asientos, Instant createdAt, Instant updatedAt) {
+        this._id = _id;
+        this.peliculaId = peliculaId;
+        this.sala = sala;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.asientos = asientos;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
+    
 
     public ObjectId getId() {
         return _id;
@@ -66,11 +92,11 @@ public class Funcion {
         this.fecha = fecha;
     }
 
-    public String getHora() {
+    public LocalTime getHora() {
         return hora;
     }
 
-    public void setHora(String hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 
@@ -82,11 +108,26 @@ public class Funcion {
         this.asientos = asientos;
     }
 
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "Funcion{" + "_id=" + _id + ", peliculaId=" + peliculaId + ", sala=" + sala + ", fecha=" + fecha + ", hora=" + hora + ", asientos=" + asientos + '}';
     }
-    
-    
-    
 }
