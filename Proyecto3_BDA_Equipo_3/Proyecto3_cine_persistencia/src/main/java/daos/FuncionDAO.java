@@ -238,6 +238,36 @@ public class FuncionDAO implements IFuncionDAO{
     }
     
     @Override
+    public List<Funcion> buscarFuncionesPorFechaHora(LocalDate fecha, LocalTime hora) throws DaoException {
+        
+        try {
+            if (fecha == null) {
+                throw new IllegalArgumentException(
+                        "La fecha es obligatoria"
+                );
+            }
+
+            if (hora == null) {
+                throw new IllegalArgumentException(
+                        "La hora es obligatoria"
+                );
+            }
+            
+            return coleccion.find(
+                    Filters.and(
+                            Filters.eq("fecha", fecha),
+                            Filters.eq("hora", hora)
+                    )
+            ).into(new ArrayList<>());
+        } catch (MongoException e) {
+            throw new DaoException(
+                    "No fue posible buscar las funciones por fecha y hora",
+                    e
+            );
+        }
+    }
+    
+    @Override
     public List<Funcion> buscarFuncionesActivas() throws DaoException {
         try {
             return coleccion.find(eq("activo", true)).into(new ArrayList<>());
@@ -388,4 +418,6 @@ public class FuncionDAO implements IFuncionDAO{
             );
         }
     }
+
+    
 }

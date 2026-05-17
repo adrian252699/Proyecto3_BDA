@@ -138,6 +138,7 @@ public class MenuCliente extends javax.swing.JFrame {
         mnuMiPerfil = new javax.swing.JMenu();
         btnMiPerfil = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        btnVerPeliculas = new javax.swing.JMenuItem();
         mnuCerrarSesion = new javax.swing.JMenu();
         btnCerrarSesion = new javax.swing.JMenuItem();
 
@@ -182,6 +183,15 @@ public class MenuCliente extends javax.swing.JFrame {
         mnuBar.add(mnuMiPerfil);
 
         jMenu2.setText("Peliculas");
+
+        btnVerPeliculas.setText("Ver Peliculas");
+        btnVerPeliculas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerPeliculasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(btnVerPeliculas);
+
         mnuBar.add(jMenu2);
 
         mnuCerrarSesion.setText("Cerrar Sesion");
@@ -206,9 +216,7 @@ public class MenuCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(scrPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 7, Short.MAX_VALUE))
+            .addComponent(scrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
         );
 
         pack();
@@ -261,12 +269,17 @@ public class MenuCliente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDesactivarCuentaActionPerformed
 
+    private void btnVerPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPeliculasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerPeliculasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCerrarSesion;
     private javax.swing.JMenuItem btnDesactivarCuenta;
     private javax.swing.JMenuItem btnIncio;
     private javax.swing.JMenuItem btnMiPerfil;
+    private javax.swing.JMenuItem btnVerPeliculas;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar mnuBar;
     private javax.swing.JMenu mnuCerrarSesion;

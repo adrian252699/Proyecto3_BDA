@@ -306,6 +306,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         btnDesactivar = new javax.swing.JButton();
 
         pnlFunciones.setBackground(new java.awt.Color(9, 79, 138));
+        pnlFunciones.setMinimumSize(new java.awt.Dimension(1430, 683));
         pnlFunciones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tblFunciones.setModel(new javax.swing.table.DefaultTableModel(

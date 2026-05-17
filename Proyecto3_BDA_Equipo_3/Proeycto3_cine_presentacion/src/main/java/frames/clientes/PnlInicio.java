@@ -4,9 +4,20 @@
  */
 package frames.clientes;
 
+import controllers.FuncionController;
+import controllers.PeliculaController;
 import controllers.UsuarioController;
 import controllers.factory.FabricaControllers;
+import dto.funciones.FuncionDTO;
 import dto.usuarios.UsuarioDTO;
+import dtos.PeliculaDTO;
+import excepciones.presentacion.ControllerException;
+import java.awt.Frame;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import tables.ModeloTablaPeliculas;
 
 /**
  *
@@ -15,19 +26,84 @@ import dto.usuarios.UsuarioDTO;
 public class PnlInicio extends javax.swing.JPanel {
     
     private final UsuarioDTO cliente;
-    private final UsuarioController control;
+    private final UsuarioController controlUsuario;
+    private final FuncionController controlFuncion;
+    private final PeliculaController controlPelicula;
+    private PeliculaDTO peliculaSeleccionada;
+    private FuncionDTO funcionSeleccionada;
+    private ModeloTablaPeliculas modelo;
+    
     /**
      * Creates new form PnlInicio
-     * @param menuCliente
      * @param cliente
      */
     public PnlInicio(UsuarioDTO cliente) {
         initComponents();
        
-        this.control = FabricaControllers.getUsuarioController();
+        this.controlUsuario = FabricaControllers.getUsuarioController();
+        this.controlFuncion = FabricaControllers.getFuncionController();
+        this.controlPelicula = FabricaControllers.getPeliculaController();
         this.cliente = cliente;
         lblBienvenido.setText("Bienvenid@ " + cliente.getNombre());
+        dateFuncion.setDateToToday();
+        llenarTablaPeliculas();
+        
+        
     }
+    
+    private void llenarTablaPeliculas(){
+        try {
+            List<PeliculaDTO> peliculas = controlPelicula.listarPeliculas();
+            modelo = new ModeloTablaPeliculas(peliculas);
+            
+            tblPeliculas.setModel(modelo);
+            
+        } catch (ControllerException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage()
+            );
+        }
+    }
+    
+    private void seleccionarPelicula() {
+
+        int filaSeleccionada = tblPeliculas.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Debes seleccionar una película",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return;
+        }
+
+        peliculaSeleccionada = modelo.obtenerPelicula(filaSeleccionada);
+        
+        
+
+    }
+    
+    private void abrirDialogPeliculas() {
+
+        DialogSeleccionarFuncion dialog = new DialogSeleccionarFuncion(
+                (Frame) SwingUtilities.getWindowAncestor(this),
+                true,
+                this.peliculaSeleccionada
+            );
+        
+        dialog.setVisible(true);
+        FuncionDTO funcion = dialog.getFuncionSeleccionada();
+
+        if (funcion != null) {
+            this.funcionSeleccionada = funcion;
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,6 +141,13 @@ public class PnlInicio extends javax.swing.JPanel {
         scrPanel = new javax.swing.JScrollPane();
         pnlContenido = new javax.swing.JPanel();
         lblBienvenido = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPeliculas = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        dateFuncion = new com.github.lgooddatepicker.components.DatePicker();
+        btnBuscar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -120,7 +203,49 @@ public class PnlInicio extends javax.swing.JPanel {
         lblBienvenido.setFont(new java.awt.Font("Verdana", 1, 36)); // NOI18N
         lblBienvenido.setForeground(new java.awt.Color(255, 255, 255));
         lblBienvenido.setText("BIENVENID@");
-        pnlContenido.add(lblBienvenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, -1, -1));
+        pnlContenido.add(lblBienvenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Cartelera:");
+        pnlContenido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+
+        tblPeliculas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        tblPeliculas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPeliculasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblPeliculas);
+
+        pnlContenido.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 820, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Fecha:");
+        pnlContenido.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, -1, 40));
+        pnlContenido.add(dateFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 190, 190, 30));
+
+        btnBuscar.setBackground(new java.awt.Color(12, 93, 140));
+        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setText("Buscar");
+        pnlContenido.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 190, 110, 30));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Seleccione una pelicula para ver funciones:");
+        pnlContenido.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, -1, -1));
 
         scrPanel.setViewportView(pnlContenido);
 
@@ -128,16 +253,29 @@ public class PnlInicio extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)
+            .addComponent(scrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+            .addComponent(scrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblPeliculasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPeliculasMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            seleccionarPelicula();
+            abrirDialogPeliculas();
+        }
+    }//GEN-LAST:event_tblPeliculasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private com.github.lgooddatepicker.components.DatePicker dateFuncion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
@@ -162,8 +300,10 @@ public class PnlInicio extends javax.swing.JPanel {
     private javax.swing.JMenuBar jMenuBar6;
     private javax.swing.JMenuBar jMenuBar7;
     private javax.swing.JMenuBar jMenuBar8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBienvenido;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JScrollPane scrPanel;
+    private javax.swing.JTable tblPeliculas;
     // End of variables declaration//GEN-END:variables
 }

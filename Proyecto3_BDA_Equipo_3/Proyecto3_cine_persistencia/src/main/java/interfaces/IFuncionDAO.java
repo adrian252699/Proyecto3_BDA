@@ -32,6 +32,8 @@ public interface IFuncionDAO {
     public List<Funcion> buscarFuncionesPorPelicula(ObjectId peliculaId) throws DaoException;
 
     public List<Funcion> buscarFuncionesPorFecha(LocalDate fecha) throws DaoException;
+    
+    public List<Funcion> buscarFuncionesPorFechaHora(LocalDate fecha, LocalTime hora) throws DaoException;
 
     public List<Funcion> buscarFuncionesPorPeliculaYFecha(ObjectId peliculaId, LocalDate fecha) throws DaoException;
 
