@@ -30,6 +30,7 @@ public class PnlLogin extends javax.swing.JPanel {
         initComponents();
         this.controlUsuario = FabricaControllers.getUsuarioController();
         this.frmLogin = frmLogin;
+        configurarEnter();
         
     }
 
@@ -110,6 +111,21 @@ public class PnlLogin extends javax.swing.JPanel {
         }  
     }
     
+    private void configurarEnter() {
+        // Hace que ENTER ejecute el botón de login automáticamente
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            java.awt.Container parent = this;
+
+            while (parent != null && !(parent instanceof javax.swing.JRootPane)) {
+                parent = parent.getParent();
+            }
+
+            if (parent instanceof javax.swing.JRootPane rootPane) {
+                rootPane.setDefaultButton(btnIniciarSesion);
+            }
+        });
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -124,7 +140,6 @@ public class PnlLogin extends javax.swing.JPanel {
         btnSalir = new javax.swing.JButton();
 
         pnlContenidoLogin.setBackground(new java.awt.Color(9, 79, 138));
-        pnlContenidoLogin.setPreferredSize(null);
         pnlContenidoLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -160,6 +175,11 @@ public class PnlLogin extends javax.swing.JPanel {
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIniciarSesionActionPerformed(evt);
+            }
+        });
+        btnIniciarSesion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnIniciarSesionKeyPressed(evt);
             }
         });
         pnlContenidoLogin.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, 170, 40));
@@ -214,6 +234,10 @@ public class PnlLogin extends javax.swing.JPanel {
         // TODO add your handling code here:
         frmLogin.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnIniciarSesionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnIniciarSesionKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIniciarSesionKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

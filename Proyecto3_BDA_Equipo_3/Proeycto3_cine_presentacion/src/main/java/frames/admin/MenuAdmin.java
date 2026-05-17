@@ -51,6 +51,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuMiPerfil = new javax.swing.JMenu();
+        btnModificarPerfil = new javax.swing.JMenuItem();
         mnuPeliculas = new javax.swing.JMenu();
         btnGestionPeliculas = new javax.swing.JMenuItem();
         mnuFunciones = new javax.swing.JMenu();
@@ -69,6 +70,15 @@ public class MenuAdmin extends javax.swing.JFrame {
         pnlContenido.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
 
         mnuMiPerfil.setText("Mi Perfil");
+
+        btnModificarPerfil.setText("Modificar Mi Perfil");
+        btnModificarPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarPerfilActionPerformed(evt);
+            }
+        });
+        mnuMiPerfil.add(btnModificarPerfil);
+
         jMenuBar1.add(mnuMiPerfil);
 
         mnuPeliculas.setText("Peliculas");
@@ -108,7 +118,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlContenido, javax.swing.GroupLayout.PREFERRED_SIZE, 1250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlContenido, javax.swing.GroupLayout.PREFERRED_SIZE, 1430, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -130,6 +140,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         mostrarPanel(new PnlGestionFunciones());
     }//GEN-LAST:event_btnGestionFuncionesActionPerformed
+
+    private void btnModificarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPerfilActionPerformed
+        // TODO add your handling code here:
+        mostrarPanel(new PnlMiPerfilAdmin(admin));
+    }//GEN-LAST:event_btnModificarPerfilActionPerformed
     
     private void mostrarPanel(JPanel panel){
         pnlContenido.removeAll();
@@ -150,6 +165,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnGestionFunciones;
     private javax.swing.JMenuItem btnGestionPeliculas;
+    private javax.swing.JMenuItem btnModificarPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu mnuBoletos;

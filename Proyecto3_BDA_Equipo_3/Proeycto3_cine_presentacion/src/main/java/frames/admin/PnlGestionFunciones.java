@@ -91,6 +91,26 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
             return;
         }
         
+        if (txtPelicula.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La película es obligatoria.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            txtPelicula.setBorder(
+                    BorderFactory.createLineBorder(
+                            Color.RED,
+                            2
+                    )
+            );
+            
+            peliculaSeleccionada=null;
+            
+            return;
+        }
+        
         if (cmbSala.getSelectedIndex() == 0) {
 
             JOptionPane.showMessageDialog(
@@ -301,7 +321,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         ));
         scrPaneFunciones.setViewportView(tblFunciones);
 
-        pnlFunciones.add(scrPaneFunciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 810, 470));
+        pnlFunciones.add(scrPaneFunciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 870, 470));
 
         lblGestionar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblGestionar.setForeground(new java.awt.Color(255, 255, 255));

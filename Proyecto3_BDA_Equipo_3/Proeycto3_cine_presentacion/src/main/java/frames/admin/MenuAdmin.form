@@ -8,6 +8,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Mi Perfil"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="btnModificarPerfil">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Modificar Mi Perfil"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModificarPerfilActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuPeliculas">
           <Properties>
@@ -76,7 +86,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="pnlContenido" min="-2" pref="1250" max="-2" attributes="0"/>
+              <Component id="pnlContenido" min="-2" pref="1430" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>

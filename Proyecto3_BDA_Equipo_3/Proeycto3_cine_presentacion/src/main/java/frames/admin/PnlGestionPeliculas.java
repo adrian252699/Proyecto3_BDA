@@ -567,6 +567,7 @@ public class PnlGestionPeliculas extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1250, 683));
 
         pnlPeliculas.setBackground(new java.awt.Color(9, 79, 138));
+        pnlPeliculas.setPreferredSize(new java.awt.Dimension(1430, 645));
         pnlPeliculas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tblPeliculas.setModel(new javax.swing.table.DefaultTableModel(
@@ -582,7 +583,7 @@ public class PnlGestionPeliculas extends javax.swing.JPanel {
         ));
         scrPnlTablaPeliculas.setViewportView(tblPeliculas);
 
-        pnlPeliculas.add(scrPnlTablaPeliculas, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 810, 470));
+        pnlPeliculas.add(scrPnlTablaPeliculas, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 970, 470));
 
         lblTitulo.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
@@ -696,11 +697,13 @@ public class PnlGestionPeliculas extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlPeliculas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlPeliculas, javax.swing.GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
