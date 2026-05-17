@@ -52,6 +52,8 @@ public class MenuAdmin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuMiPerfil = new javax.swing.JMenu();
         btnModificarPerfil = new javax.swing.JMenuItem();
+        mnuGestionarClientes = new javax.swing.JMenu();
+        btnGestionarClientes = new javax.swing.JMenuItem();
         mnuPeliculas = new javax.swing.JMenu();
         btnGestionPeliculas = new javax.swing.JMenuItem();
         mnuFunciones = new javax.swing.JMenu();
@@ -80,6 +82,18 @@ public class MenuAdmin extends javax.swing.JFrame {
         mnuMiPerfil.add(btnModificarPerfil);
 
         jMenuBar1.add(mnuMiPerfil);
+
+        mnuGestionarClientes.setText("Clientes");
+
+        btnGestionarClientes.setText("Gestionar Clientes");
+        btnGestionarClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionarClientesActionPerformed(evt);
+            }
+        });
+        mnuGestionarClientes.add(btnGestionarClientes);
+
+        jMenuBar1.add(mnuGestionarClientes);
 
         mnuPeliculas.setText("Peliculas");
 
@@ -145,6 +159,11 @@ public class MenuAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         mostrarPanel(new PnlMiPerfilAdmin(admin));
     }//GEN-LAST:event_btnModificarPerfilActionPerformed
+
+    private void btnGestionarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarClientesActionPerformed
+        // TODO add your handling code here:
+        mostrarPanel(new PnlGestionClientes());
+    }//GEN-LAST:event_btnGestionarClientesActionPerformed
     
     private void mostrarPanel(JPanel panel){
         pnlContenido.removeAll();
@@ -165,11 +184,13 @@ public class MenuAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnGestionFunciones;
     private javax.swing.JMenuItem btnGestionPeliculas;
+    private javax.swing.JMenuItem btnGestionarClientes;
     private javax.swing.JMenuItem btnModificarPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu mnuBoletos;
     private javax.swing.JMenu mnuFunciones;
+    private javax.swing.JMenu mnuGestionarClientes;
     private javax.swing.JMenu mnuMiPerfil;
     private javax.swing.JMenu mnuPagos;
     private javax.swing.JMenu mnuPeliculas;

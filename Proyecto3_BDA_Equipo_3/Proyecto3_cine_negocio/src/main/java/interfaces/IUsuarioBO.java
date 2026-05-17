@@ -30,6 +30,8 @@ public interface IUsuarioBO {
     
     public boolean desactivarUsuario(String id, String password)throws NegocioException;
     
+    public boolean desactivarUsuarioAdmin(String id)throws NegocioException;
+    
     public boolean activarUsuario(String id)throws NegocioException;
     
     public UsuarioDTO buscarPorCorreo(String correo)throws NegocioException;
@@ -41,4 +43,6 @@ public interface IUsuarioBO {
     public List<UsuarioDTO> listarUsuarios()throws NegocioException;
     
     public List<UsuarioDTO> listarUsuariosPaginado(int pagina, int limite)throws NegocioException;
+    
+    public List<UsuarioDTO> listarClientes()throws NegocioException;
 }

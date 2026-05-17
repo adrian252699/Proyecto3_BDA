@@ -17,6 +17,7 @@ import static com.mongodb.client.model.Updates.set;
 import com.mongodb.client.result.UpdateResult;
 import config.ConexionMongo;
 import entidades.Usuario;
+import enums.Rol;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
 import interfaces.IUsuarioDAO;
@@ -303,5 +304,21 @@ public class UsuarioDAO implements IUsuarioDAO{
         } catch (MongoException e) {
             throw new DaoException("Error al actualizar correo",e);
         }
+    }
+
+    @Override
+    public List<Usuario> listarClientes() throws DaoException {
+        try {
+            List<Usuario> clientes = coleccion.find(Filters.eq("rol", Rol.CLIENTE)).into(new ArrayList<>());
+            
+            if (clientes.isEmpty()) {
+                return new ArrayList<>();
+            }
+            
+            return clientes;
+        } catch (MongoException e) {
+            throw new DaoException("No fue posible listar los clientes", e);
+        }
+        
     }
 }

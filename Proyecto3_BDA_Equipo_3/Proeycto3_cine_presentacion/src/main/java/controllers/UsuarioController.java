@@ -75,6 +75,14 @@ public class UsuarioController {
         }
     }
     
+    public boolean desactivarUsuarioAdmin(String id) throws ControllerException{
+        try {
+            return usuarioBO.desactivarUsuarioAdmin(id);
+        } catch (NegocioException e) {
+            throw new ControllerException("No fue posible desactivar al usuario: "+e.getMessage());
+        }
+    }
+    
     public boolean activarUsuario(String id) throws ControllerException{
         try {
             return usuarioBO.activarUsuario(id);
@@ -104,6 +112,14 @@ public class UsuarioController {
             return usuarioBO.listarUsuarios();
         } catch (NegocioException e) {
             throw new ControllerException("No fue posible listar usuarios: "+e.getMessage());
+        }
+    }
+    
+    public List<UsuarioDTO> listarClientes()throws ControllerException{
+        try {
+            return usuarioBO.listarClientes();
+        } catch (NegocioException e) {
+            throw new ControllerException("No fue posible listar los clientes: "+e.getMessage());
         }
     }
     

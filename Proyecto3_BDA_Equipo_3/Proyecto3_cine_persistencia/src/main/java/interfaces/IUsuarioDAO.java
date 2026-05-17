@@ -35,5 +35,7 @@ public interface IUsuarioDAO {
     
     public List<Usuario> listarUsuarios()throws DaoException;
     
+    public List<Usuario> listarClientes()throws DaoException;
+    
     public List<Usuario> listarUsuariosPaginado(int pagina, int limite)throws DaoException;
 }

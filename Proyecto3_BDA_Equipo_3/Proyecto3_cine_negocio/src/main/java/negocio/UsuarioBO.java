@@ -578,6 +578,39 @@ public class UsuarioBO implements IUsuarioBO{
             throw new NegocioException("No fue posible validar el correo", e);
         }
     }
+
+    @Override
+    public boolean desactivarUsuarioAdmin(String id) throws NegocioException {
+        try {
+            if (id == null || id.trim().isEmpty()) {
+                throw new NegocioException( "El id del usuario es obligatorio");
+            }
+            
+            ObjectId objectId;
+            
+            try {
+                objectId = new ObjectId(id);    
+            } catch (IllegalArgumentException e) {
+                throw new NegocioException("Id inválido");
+            }
+
+            return usuarioDAO.desactivarUsuario(objectId);
+            
+        }catch (DaoException e) {
+            throw new NegocioException("Error al desactivar usuario:", e);
+        }
+    }
+
+    @Override
+    public List<UsuarioDTO> listarClientes() throws NegocioException {
+        try {
+            List<Usuario> clientesEntidad = usuarioDAO.listarClientes();
+            
+            return UsuarioMapper.toDTOList(clientesEntidad);
+        } catch (DaoException e) {
+           throw new NegocioException("Error al listar clientes:", e);
+        }
+    }
     
     
 }
