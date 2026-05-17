@@ -14,12 +14,12 @@
             <Property name="text" type="java.lang.String" value="Peliculas"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuGestionPeliculas">
+            <MenuItem class="javax.swing.JMenuItem" name="btnGestionPeliculas">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gestionar Peliculas"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuGestionPeliculasActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGestionPeliculasActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -28,6 +28,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Funciones"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="btnGestionFunciones">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gestionar Funciones"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGestionFuncionesActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuPagos">
           <Properties>

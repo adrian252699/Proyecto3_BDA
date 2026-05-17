@@ -7,7 +7,9 @@ package negocio;
 import dto.funciones.ActualizarFuncionDTO;
 import dto.funciones.FuncionDTO;
 import dto.funciones.RegistrarFuncionDTO;
+import embebidos.Sala;
 import entidades.Funcion;
+import entidades.Pelicula;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
 import excepciones.negocio.NegocioException;
@@ -23,7 +25,7 @@ import org.bson.types.ObjectId;
  * @author jalt2
  */
 public class FuncionBO implements IFuncionBO{
-    
+    //Todos los metodos en el Controller
     private final IFuncionDAO funcionDAO;
 
     public FuncionBO(IFuncionDAO funcionDAO) {
@@ -32,7 +34,7 @@ public class FuncionBO implements IFuncionBO{
 
     @Override
     public FuncionDTO guardarFuncion(RegistrarFuncionDTO funcionDTO) throws NegocioException {
-        
+
         if (funcionDTO == null) {
             throw new NegocioException("La función no puede estar vacía");
         }
@@ -42,12 +44,14 @@ public class FuncionBO implements IFuncionBO{
             throw new NegocioException("La película es obligatoria");
         }
 
-        ObjectId peliculaId;
-
         try {
-            peliculaId = new ObjectId(funcionDTO.getPeliculaId());
+            new ObjectId(funcionDTO.getPeliculaId());
         } catch (IllegalArgumentException e) {
             throw new NegocioException("Id de película inválido");
+        }
+        
+        if (funcionDTO.getTituloPelicula()==null||funcionDTO.getTituloPelicula().trim().isEmpty()) {
+            throw new NegocioException("La funcion debe tener un titulo de pelicula");
         }
 
         // Validar sala
@@ -55,18 +59,6 @@ public class FuncionBO implements IFuncionBO{
             throw new NegocioException("El número de sala es obligatorio");
         }
 
-        if (funcionDTO.getNumSala() <= 0) {
-            throw new NegocioException("El número de sala debe ser mayor a 0");
-        }
-
-        // Validar capacidad
-        if (funcionDTO.getCapacidadSala() == null) {
-            throw new NegocioException("La capacidad de la sala es obligatoria");
-        }
-
-        if (funcionDTO.getCapacidadSala() <= 0) {
-            throw new NegocioException("La capacidad debe ser mayor a 0");
-        }
 
         // Validar fecha
         if (funcionDTO.getFecha() == null) {
@@ -84,7 +76,6 @@ public class FuncionBO implements IFuncionBO{
 
         try {
             boolean existeFuncion = funcionDAO.existeFuncionEnSalaHorario(
-                    
                     funcionDTO.getNumSala(),
                     funcionDTO.getFecha(),
                     funcionDTO.getHora()
@@ -93,10 +84,21 @@ public class FuncionBO implements IFuncionBO{
             if (existeFuncion) {
                 throw new NegocioException("Ya existe una función programada en esa sala, fecha y horario");
             }
+            
+            Sala sala = new Sala();
 
+            sala.setNumSala(funcionDTO.getNumSala());
+
+            sala.setCapacidad(
+                    obtenerCapacidadSala(
+                            funcionDTO.getNumSala()
+                    )
+            );
             
             Funcion funcionEntidad = FuncionMapper.toEntity(funcionDTO);
 
+            funcionEntidad.setSala(sala);
+            funcionEntidad.setActivo(true);
             
             Funcion funcionGuardada = funcionDAO.guardarFuncion(funcionEntidad);
 
@@ -393,4 +395,15 @@ public class FuncionBO implements IFuncionBO{
         }
     }
     
+    private Integer obtenerCapacidadSala(Integer numSala) throws NegocioException{
+        //Capacidad de cada sala cambiar en caso de ser necesario
+        return switch (numSala) {
+            case 1 -> 80;
+            case 2 -> 80;
+            case 3 -> 80;
+            case 4 -> 90;    
+            case 5 -> 100;
+            default -> throw new NegocioException("La sala no existe");
+        };
+    }
 }

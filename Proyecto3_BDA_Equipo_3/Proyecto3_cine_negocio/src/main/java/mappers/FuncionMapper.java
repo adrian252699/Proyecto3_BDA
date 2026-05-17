@@ -26,7 +26,9 @@ public class FuncionMapper {
      * @param funcion
      * @return 
      */
-    public static FuncionDTO toDTO(Funcion funcion) {
+    public static FuncionDTO toDTO(
+            Funcion funcion
+    ) {
 
         if (funcion == null) {
             return null;
@@ -34,11 +36,15 @@ public class FuncionMapper {
 
         FuncionDTO dto = new FuncionDTO();
 
-        dto.setId(funcion.getId().toHexString());
+        dto.setId(
+                funcion.getId().toHexString()
+        );
 
         dto.setPeliculaId(
                 funcion.getPeliculaId().toHexString()
         );
+
+        dto.setTituloPelicula(funcion.getTituloPelicula());
 
         dto.setNumSala(
                 funcion.getSala().getNumSala()
@@ -54,14 +60,6 @@ public class FuncionMapper {
 
         dto.setHora(
                 funcion.getHora()
-        );
-
-        dto.setCreatedAt(
-                funcion.getCreatedAt()
-        );
-
-        dto.setUpdatedAt(
-                funcion.getUpdatedAt()
         );
 
         return dto;
@@ -92,15 +90,14 @@ public class FuncionMapper {
                 dto.getNumSala()
         );
 
-        sala.setCapacidad(
-                dto.getCapacidadSala()
-        );
-
         funcion.setSala(sala);
 
         funcion.setFecha(
                 dto.getFecha()
         );
+        
+        
+        funcion.setTituloPelicula(dto.getTituloPelicula());
 
         funcion.setHora(
                 dto.getHora()
@@ -161,18 +158,17 @@ public class FuncionMapper {
      * @return 
      */
     public static List<FuncionDTO> toDTOList(
-            List<Funcion> funciones
+        List<Funcion> funciones
     ) {
 
         List<FuncionDTO> listaDTO =
                 new ArrayList<>();
 
-        if (funciones == null) {
-            return listaDTO;
-        }
-
         for (Funcion funcion : funciones) {
-            listaDTO.add(toDTO(funcion));
+
+            listaDTO.add(
+                    toDTO(funcion)
+            );
         }
 
         return listaDTO;

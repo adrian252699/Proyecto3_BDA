@@ -40,4 +40,6 @@ public interface IFuncionDAO {
     public boolean existeFuncionEnSalaHorario(Integer numSala, LocalDate fecha, LocalTime hora) throws DaoException;
 
     public List<Funcion> buscarFuncionesActivas() throws DaoException;
+    
+    public List<Funcion> listarFuncionesPelicula()throws DaoException;
 }

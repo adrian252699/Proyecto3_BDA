@@ -22,7 +22,7 @@ import tables.ModeloTablaPeliculas;
  *
  * @author jalt2
  */
-public class PnlPeliculas extends javax.swing.JPanel {
+public class PnlGestionPeliculas extends javax.swing.JPanel {
     
     private final PeliculaController control;
     private String idPeliculaSeleccionada;
@@ -30,7 +30,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
     /**
      * Creates new form PnlPeliculas
      */
-    public PnlPeliculas() {
+    public PnlGestionPeliculas() {
         initComponents();
         this.setPreferredSize(new Dimension(1250,683));
         this.setLayout(new BorderLayout());
@@ -645,7 +645,7 @@ public class PnlPeliculas extends javax.swing.JPanel {
         btnEliminar.setText("ELIMINAR");
         pnlPeliculas.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 620, 120, -1));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Gestionar Peliculas");
         pnlPeliculas.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));

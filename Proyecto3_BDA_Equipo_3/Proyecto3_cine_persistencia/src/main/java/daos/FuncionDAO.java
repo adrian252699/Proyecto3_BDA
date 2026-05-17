@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -358,6 +359,31 @@ public class FuncionDAO implements IFuncionDAO{
 
             throw new DaoException(
                     "No fue posible verificar la función",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public List<Funcion> listarFuncionesPelicula() throws DaoException {
+        try {
+            List<Document> pipeline = Arrays.asList(
+
+                new Document("$lookup",
+                    new Document("from", "peliculas")
+                        .append("localField", "peliculaId")
+                        .append("foreignField", "_id")
+                        .append("as", "pelicula")
+                ),
+
+                new Document("$unwind", "$pelicula")
+            );
+            
+            List<Funcion> funciones = coleccion.aggregate(pipeline).into(new ArrayList<>());
+            return funciones;
+        } catch (MongoException e) {
+            throw new DaoException(
+                    "No fue posible buscar funciones con peliculas",
                     e
             );
         }

@@ -16,6 +16,8 @@ public class FuncionDTO {
     private String id;
 
     private String peliculaId;
+    
+    private String tituloPelicula;
 
     private Integer numSala;
     
@@ -31,6 +33,20 @@ public class FuncionDTO {
 
     public FuncionDTO() {
     }
+
+    public FuncionDTO(String id, String peliculaId, String tituloPelicula, Integer numSala, Integer capacidadSala, LocalDate fecha, LocalTime hora, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.peliculaId = peliculaId;
+        this.tituloPelicula = tituloPelicula;
+        this.numSala = numSala;
+        this.capacidadSala = capacidadSala;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+    
+    
 
     public FuncionDTO(String id, String peliculaId, Integer numSala, LocalDate fecha, LocalTime hora, Instant createdAt, Instant updatedAt) {
         this.id = id;
@@ -106,6 +122,14 @@ public class FuncionDTO {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getTituloPelicula() {
+        return tituloPelicula;
+    }
+
+    public void setTituloPelicula(String tituloPelicula) {
+        this.tituloPelicula = tituloPelicula;
     }
 
     

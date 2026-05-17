@@ -34,5 +34,5 @@ public interface IFuncionBO {
 
     public List<FuncionDTO> buscarFuncionesPorPeliculaYFecha(String peliculaId, LocalDate fecha) throws NegocioException;
     
-    List<FuncionDTO> buscarFuncionesActivas()throws NegocioException;
+    List<FuncionDTO> buscarFuncionesActivas()throws NegocioException; 
 }

@@ -4,6 +4,7 @@
  */
 package controllers.factory;
 
+import controllers.FuncionController;
 import controllers.PeliculaController;
 import controllers.UsuarioController;
 
@@ -15,6 +16,8 @@ public class FabricaControllers {
     private static PeliculaController peliculaController;
 
     private static UsuarioController usuarioController;
+    
+    private static FuncionController funcionController;
 
     private FabricaControllers() {}
 
@@ -36,5 +39,16 @@ public class FabricaControllers {
         }
 
         return usuarioController;
+    }
+    
+    public static FuncionController getFuncionController() {
+        
+        if (funcionController==null) {
+            
+            funcionController = new FuncionController();
+            
+        }
+        
+        return funcionController;
     }
 }

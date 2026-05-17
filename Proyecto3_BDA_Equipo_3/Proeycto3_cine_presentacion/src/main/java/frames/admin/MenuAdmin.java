@@ -52,8 +52,9 @@ public class MenuAdmin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuMiPerfil = new javax.swing.JMenu();
         mnuPeliculas = new javax.swing.JMenu();
-        mnuGestionPeliculas = new javax.swing.JMenuItem();
+        btnGestionPeliculas = new javax.swing.JMenuItem();
         mnuFunciones = new javax.swing.JMenu();
+        btnGestionFunciones = new javax.swing.JMenuItem();
         mnuPagos = new javax.swing.JMenu();
         mnuBoletos = new javax.swing.JMenu();
 
@@ -72,17 +73,26 @@ public class MenuAdmin extends javax.swing.JFrame {
 
         mnuPeliculas.setText("Peliculas");
 
-        mnuGestionPeliculas.setText("Gestionar Peliculas");
-        mnuGestionPeliculas.addActionListener(new java.awt.event.ActionListener() {
+        btnGestionPeliculas.setText("Gestionar Peliculas");
+        btnGestionPeliculas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuGestionPeliculasActionPerformed(evt);
+                btnGestionPeliculasActionPerformed(evt);
             }
         });
-        mnuPeliculas.add(mnuGestionPeliculas);
+        mnuPeliculas.add(btnGestionPeliculas);
 
         jMenuBar1.add(mnuPeliculas);
 
         mnuFunciones.setText("Funciones");
+
+        btnGestionFunciones.setText("Gestionar Funciones");
+        btnGestionFunciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionFuncionesActionPerformed(evt);
+            }
+        });
+        mnuFunciones.add(btnGestionFunciones);
+
         jMenuBar1.add(mnuFunciones);
 
         mnuPagos.setText("Pagos");
@@ -111,10 +121,15 @@ public class MenuAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnuGestionPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuGestionPeliculasActionPerformed
+    private void btnGestionPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionPeliculasActionPerformed
         // TODO add your handling code here:
-        mostrarPanel(new PnlPeliculas());
-    }//GEN-LAST:event_mnuGestionPeliculasActionPerformed
+        mostrarPanel(new PnlGestionPeliculas());
+    }//GEN-LAST:event_btnGestionPeliculasActionPerformed
+
+    private void btnGestionFuncionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionFuncionesActionPerformed
+        // TODO add your handling code here:
+        mostrarPanel(new PnlGestionFunciones());
+    }//GEN-LAST:event_btnGestionFuncionesActionPerformed
     
     private void mostrarPanel(JPanel panel){
         pnlContenido.removeAll();
@@ -133,11 +148,12 @@ public class MenuAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnGestionFunciones;
+    private javax.swing.JMenuItem btnGestionPeliculas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu mnuBoletos;
     private javax.swing.JMenu mnuFunciones;
-    private javax.swing.JMenuItem mnuGestionPeliculas;
     private javax.swing.JMenu mnuMiPerfil;
     private javax.swing.JMenu mnuPagos;
     private javax.swing.JMenu mnuPeliculas;

@@ -13,10 +13,10 @@ import java.time.LocalTime;
  */
 public class RegistrarFuncionDTO {
     private String peliculaId;
+    
+    private String tituloPelicula;
 
     private Integer numSala;
-
-    private Integer capacidadSala;
 
     private LocalDate fecha;
 
@@ -25,13 +25,30 @@ public class RegistrarFuncionDTO {
     public RegistrarFuncionDTO() {
     }
 
-    public RegistrarFuncionDTO(String peliculaId, Integer numSala, Integer capacidadSala, LocalDate fecha, LocalTime hora) {
+    public RegistrarFuncionDTO(String peliculaId, Integer numSala, LocalDate fecha, LocalTime hora) {
         this.peliculaId = peliculaId;
         this.numSala = numSala;
-        this.capacidadSala = capacidadSala;
         this.fecha = fecha;
         this.hora = hora;
     }
+
+    public RegistrarFuncionDTO(String peliculaId, String tituloPelicula, Integer numSala, LocalDate fecha, LocalTime hora) {
+        this.peliculaId = peliculaId;
+        this.tituloPelicula = tituloPelicula;
+        this.numSala = numSala;
+        this.fecha = fecha;
+        this.hora = hora;
+    }
+
+    public String getTituloPelicula() {
+        return tituloPelicula;
+    }
+
+    public void setTituloPelicula(String tituloPelicula) {
+        this.tituloPelicula = tituloPelicula;
+    }
+    
+    
 
     public String getPeliculaId() {
         return peliculaId;
@@ -47,14 +64,6 @@ public class RegistrarFuncionDTO {
 
     public void setNumSala(Integer numSala) {
         this.numSala = numSala;
-    }
-
-    public Integer getCapacidadSala() {
-        return capacidadSala;
-    }
-
-    public void setCapacidadSala(Integer capacidadSala) {
-        this.capacidadSala = capacidadSala;
     }
 
     public LocalDate getFecha() {

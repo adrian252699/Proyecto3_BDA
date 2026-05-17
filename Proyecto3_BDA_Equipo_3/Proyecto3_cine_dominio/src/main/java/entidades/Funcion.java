@@ -19,6 +19,7 @@ import org.bson.types.ObjectId;
 public class Funcion {
     private ObjectId _id;
     private ObjectId peliculaId;
+    private String tituloPelicula;
     private Sala sala;
     private LocalDate fecha;
     private LocalTime hora;
@@ -30,24 +31,17 @@ public class Funcion {
     public Funcion() {
     }
 
-    public Funcion(ObjectId _id, ObjectId peliculaId, Sala sala, LocalDate fecha, LocalTime hora, ArrayList<Asiento> asientos) {
+    public Funcion(ObjectId _id, ObjectId peliculaId, String tituloPelicula, Sala sala, LocalDate fecha, LocalTime hora, ArrayList<Asiento> asientos, Instant createdAt, Instant updatedAt, boolean activo) {
         this._id = _id;
         this.peliculaId = peliculaId;
-        this.sala = sala;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.asientos = asientos;
-    }
-
-    public Funcion(ObjectId _id, ObjectId peliculaId, Sala sala, LocalDate fecha, LocalTime hora, ArrayList<Asiento> asientos, Instant createdAt, Instant updatedAt) {
-        this._id = _id;
-        this.peliculaId = peliculaId;
+        this.tituloPelicula = tituloPelicula;
         this.sala = sala;
         this.fecha = fecha;
         this.hora = hora;
         this.asientos = asientos;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.activo = activo;
     }
 
     public boolean isActivo() {
@@ -57,8 +51,14 @@ public class Funcion {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-    
-    
+
+    public String getTituloPelicula() {
+        return tituloPelicula;
+    }
+
+    public void setTituloPelicula(String tituloPelicula) {
+        this.tituloPelicula = tituloPelicula;
+    }
 
     public ObjectId getId() {
         return _id;
