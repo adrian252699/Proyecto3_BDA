@@ -4,7 +4,7 @@
  */
 package dto.funciones;
 
-import dtos.AsientoDTO;
+import dto.salas.AsientoDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 

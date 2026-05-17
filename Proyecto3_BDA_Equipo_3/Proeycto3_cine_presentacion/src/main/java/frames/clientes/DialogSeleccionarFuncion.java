@@ -7,12 +7,14 @@ package frames.clientes;
 import controllers.FuncionController;
 import controllers.factory.FabricaControllers;
 import dto.funciones.FuncionDTO;
+import dto.salas.AsientoDTO;
 import dtos.PeliculaDTO;
 import excepciones.presentacion.ControllerException;
+import java.awt.Frame;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JOptionPane;
-import tables.ModeloTablaFunciones;
+import javax.swing.SwingUtilities;
 import tables.ModeloTablaFuncionesPeliculas;
 
 /**
@@ -23,6 +25,7 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
     private FuncionDTO funcionSeleccionada;
     private ModeloTablaFuncionesPeliculas modelo;
     private final PeliculaDTO peliculaSeleccionada;
+    private AsientoDTO asientoSeleccionado;
     private final FuncionController control;
     /**
      * Creates new form DialogSeleccionarFuncion
@@ -66,7 +69,7 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Debes seleccionar una película",
+                    "Debes seleccionar una funcion",
                     "Error",
                     JOptionPane.WARNING_MESSAGE
             );
@@ -94,11 +97,34 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
             );
         }
     }
+    
+    private void abrirDialogAsientos() {
+
+        DialogSeleccionarAsiento dialog = new DialogSeleccionarAsiento(
+                (Frame) SwingUtilities.getWindowAncestor(this),
+                true,
+                this.funcionSeleccionada
+            );
+        
+        dialog.setVisible(true);
+        AsientoDTO asiento = dialog.getAsientoSeleccionado();
+
+        if (asiento != null) {
+            this.asientoSeleccionado = asiento;
+        }
+    }
 
     public FuncionDTO getFuncionSeleccionada() {
         return funcionSeleccionada;
     }
-    
+
+    public AsientoDTO getAsientoSeleccionado() {
+        return asientoSeleccionado;
+    }
+
+    public void setAsientoSeleccionado(AsientoDTO asientoSeleccionado) {
+        this.asientoSeleccionado = asientoSeleccionado;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -182,8 +208,9 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
 
     private void tblFuncionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFuncionesMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
             seleccionarFuncion();
+            abrirDialogAsientos();
         }
     }//GEN-LAST:event_tblFuncionesMouseClicked
 

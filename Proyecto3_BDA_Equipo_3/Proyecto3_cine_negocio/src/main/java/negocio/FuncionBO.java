@@ -7,17 +7,19 @@ package negocio;
 import dto.funciones.ActualizarFuncionDTO;
 import dto.funciones.FuncionDTO;
 import dto.funciones.RegistrarFuncionDTO;
+import dto.salas.SalaDTO;
 import embebidos.Sala;
 import entidades.Funcion;
-import entidades.Pelicula;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
 import excepciones.negocio.NegocioException;
 import interfaces.IFuncionBO;
 import interfaces.IFuncionDAO;
+import interfaces.ISalaDAO;
 import java.time.LocalDate;
 import java.util.List;
 import mappers.FuncionMapper;
+import mappers.SalaMapper;
 import org.bson.types.ObjectId;
 
 /**
@@ -27,9 +29,11 @@ import org.bson.types.ObjectId;
 public class FuncionBO implements IFuncionBO{
     //Todos los metodos en el Controller
     private final IFuncionDAO funcionDAO;
+    private final ISalaDAO salaDAO;
 
-    public FuncionBO(IFuncionDAO funcionDAO) {
+    public FuncionBO(IFuncionDAO funcionDAO,ISalaDAO salaDAO) {
         this.funcionDAO = funcionDAO;
+        this.salaDAO = salaDAO;
     }
 
     @Override
@@ -397,13 +401,20 @@ public class FuncionBO implements IFuncionBO{
     
     private Integer obtenerCapacidadSala(Integer numSala) throws NegocioException{
         //Capacidad de cada sala cambiar en caso de ser necesario
-        return switch (numSala) {
-            case 1 -> 80;
-            case 2 -> 80;
-            case 3 -> 80;
-            case 4 -> 90;    
-            case 5 -> 100;
-            default -> throw new NegocioException("La sala no existe");
-        };
+
+        try {
+            Sala salaEntidad = salaDAO.buscarPorNumero(numSala);
+            
+            SalaDTO salaEncontrada = SalaMapper.toDTO(salaEntidad);
+            
+            return salaEncontrada.getCapacidad();
+        } catch (DaoException ex) {
+            throw new NegocioException(
+                    "Error al buscar por numero de sala",
+                    ex
+            );
+        } catch (EntityNotFoundException ex) {
+            throw new NegocioException(ex.getMessage());
+        }
     }
 }

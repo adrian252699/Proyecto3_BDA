@@ -48,23 +48,13 @@ public class ModeloTablaFunciones extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         FuncionDTO funcion = funciones.get(rowIndex);
 
-        switch (columnIndex) {
-
-            case 0:
-                return funcion.getTituloPelicula();
-
-            case 1:
-                return funcion.getNumSala();
-
-            case 2:
-                return funcion.getFecha();
-
-            case 3:
-                return funcion.getHora().format(formatter);
-
-            default:
-                return null;
-        }
+        return switch (columnIndex) {
+            case 0 -> funcion.getTituloPelicula();
+            case 1 -> funcion.getNumSala();
+            case 2 -> funcion.getFecha();
+            case 3 -> funcion.getHora().format(formatter);
+            default -> null;
+        };
     }
     
     @Override

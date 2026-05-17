@@ -9,11 +9,11 @@ import controllers.PeliculaController;
 import controllers.UsuarioController;
 import controllers.factory.FabricaControllers;
 import dto.funciones.FuncionDTO;
+import dto.salas.AsientoDTO;
 import dto.usuarios.UsuarioDTO;
 import dtos.PeliculaDTO;
 import excepciones.presentacion.ControllerException;
 import java.awt.Frame;
-import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -31,6 +31,7 @@ public class PnlInicio extends javax.swing.JPanel {
     private final PeliculaController controlPelicula;
     private PeliculaDTO peliculaSeleccionada;
     private FuncionDTO funcionSeleccionada;
+    private AsientoDTO asientoSeleccionado;
     private ModeloTablaPeliculas modelo;
     
     /**
@@ -45,7 +46,6 @@ public class PnlInicio extends javax.swing.JPanel {
         this.controlPelicula = FabricaControllers.getPeliculaController();
         this.cliente = cliente;
         lblBienvenido.setText("Bienvenid@ " + cliente.getNombre());
-        dateFuncion.setDateToToday();
         llenarTablaPeliculas();
         
         
@@ -98,10 +98,18 @@ public class PnlInicio extends javax.swing.JPanel {
         
         dialog.setVisible(true);
         FuncionDTO funcion = dialog.getFuncionSeleccionada();
+        AsientoDTO asiento = dialog.getAsientoSeleccionado();
 
         if (funcion != null) {
             this.funcionSeleccionada = funcion;
         }
+        if (asiento != null) {
+            this.asientoSeleccionado = asiento;
+        }
+        
+        System.out.println(this.peliculaSeleccionada.toString());
+        System.out.println(this.funcionSeleccionada.toString());
+        System.out.println(this.asientoSeleccionado.toString());
     }
     
 
@@ -144,9 +152,6 @@ public class PnlInicio extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPeliculas = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        dateFuncion = new com.github.lgooddatepicker.components.DatePicker();
-        btnBuscar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         jMenu1.setText("File");
@@ -230,18 +235,6 @@ public class PnlInicio extends javax.swing.JPanel {
 
         pnlContenido.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 820, -1));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Fecha:");
-        pnlContenido.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, -1, 40));
-        pnlContenido.add(dateFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 190, 190, 30));
-
-        btnBuscar.setBackground(new java.awt.Color(12, 93, 140));
-        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
-        btnBuscar.setText("Buscar");
-        pnlContenido.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 190, 110, 30));
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Seleccione una pelicula para ver funciones:");
@@ -271,10 +264,7 @@ public class PnlInicio extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
-    private com.github.lgooddatepicker.components.DatePicker dateFuncion;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
