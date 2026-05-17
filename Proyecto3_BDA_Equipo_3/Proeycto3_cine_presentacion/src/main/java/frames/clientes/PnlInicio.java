@@ -93,7 +93,8 @@ public class PnlInicio extends javax.swing.JPanel {
         DialogSeleccionarFuncion dialog = new DialogSeleccionarFuncion(
                 (Frame) SwingUtilities.getWindowAncestor(this),
                 true,
-                this.peliculaSeleccionada
+                this.peliculaSeleccionada,
+                cliente
             );
         
         dialog.setVisible(true);

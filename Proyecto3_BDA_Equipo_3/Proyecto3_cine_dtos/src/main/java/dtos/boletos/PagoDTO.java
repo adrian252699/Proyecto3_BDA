@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dtos;
+package dtos.boletos;
 
+import enums.EstadoPago;
+import enums.MetodoPago;
 import java.time.LocalDate;
 
 /**
@@ -12,21 +14,33 @@ import java.time.LocalDate;
  */
 public class PagoDTO {
     private String id;
+    private String boletoId;
     private Double monto;
-    private String metodoPago;
-    private String estadoPago;
+    private MetodoPago metodoPago;
+    private EstadoPago estadoPago;
     private LocalDate fechaPago;
 
     public PagoDTO() {
     }
 
-    public PagoDTO(String id, Double monto, String metodoPago, String estadoPago, LocalDate fechaPago) {
+    public PagoDTO(String id, String boletoId, Double monto, MetodoPago metodoPago, EstadoPago estadoPago, LocalDate fechaPago) {
         this.id = id;
+        this.boletoId = boletoId;
         this.monto = monto;
         this.metodoPago = metodoPago;
         this.estadoPago = estadoPago;
         this.fechaPago = fechaPago;
     }
+
+    public String getBoletoId() {
+        return boletoId;
+    }
+
+    public void setBoletoId(String boletoId) {
+        this.boletoId = boletoId;
+    }
+
+    
 
     public String getId() {
         return id;
@@ -44,19 +58,19 @@ public class PagoDTO {
         this.monto = monto;
     }
 
-    public String getMetodoPago() {
+    public MetodoPago getMetodoPago() {
         return metodoPago;
     }
 
-    public void setMetodoPago(String metodoPago) {
+    public void setMetodoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
     }
 
-    public String getEstadoPago() {
+    public EstadoPago getEstadoPago() {
         return estadoPago;
     }
 
-    public void setEstadoPago(String estadoPago) {
+    public void setEstadoPago(EstadoPago estadoPago) {
         this.estadoPago = estadoPago;
     }
 

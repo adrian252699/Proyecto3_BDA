@@ -4,18 +4,24 @@
  */
 package factory;
 
+import daos.BoletoDAO;
 import daos.FuncionDAO;
+import daos.PagoDAO;
 import daos.PeliculaDAO;
 import daos.SalaDAO;
 import daos.UsuarioDAO;
+import interfaces.IBoletoBO;
+import interfaces.IBoletoDAO;
 import interfaces.IFuncionBO;
 import interfaces.IFuncionDAO;
+import interfaces.IPagoDAO;
 import interfaces.IPeliculaBO;
 import interfaces.IPeliculaDAO;
 import interfaces.ISalaBO;
 import interfaces.ISalaDAO;
 import interfaces.IUsuarioBO;
 import interfaces.IUsuarioDAO;
+import negocio.BoletoBO;
 import negocio.FuncionBO;
 import negocio.PeliculaBO;
 import negocio.SalaBO;
@@ -45,5 +51,11 @@ public class FabricaObjetosBO {
     public static ISalaBO crearSalaBO(){
         ISalaDAO salaDAO = new SalaDAO();
         return new SalaBO(salaDAO);
+    }
+    
+    public static IBoletoBO crearBoletoBO(){
+        IBoletoDAO boletoDAO = new BoletoDAO();
+        IPagoDAO pagoDAO = new PagoDAO();
+        return new BoletoBO(boletoDAO, pagoDAO);
     }
 }

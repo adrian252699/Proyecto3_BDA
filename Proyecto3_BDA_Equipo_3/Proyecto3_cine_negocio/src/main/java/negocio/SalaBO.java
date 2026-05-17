@@ -4,6 +4,7 @@
  */
 package negocio;
 
+import dto.funciones.FuncionDTO;
 import dto.salas.SalaDTO;
 import dto.salas.AsientoDTO;
 import dto.salas.CrearSalaDTO;
@@ -14,6 +15,7 @@ import excepciones.negocio.NegocioException;
 import interfaces.ISalaBO;
 import interfaces.ISalaDAO;
 import java.util.List;
+import mappers.FuncionMapper;
 import mappers.SalaMapper;
 
 /**
@@ -82,6 +84,15 @@ public class SalaBO implements ISalaBO{
     @Override
     public List<AsientoDTO> listarAsientosOcupados(Integer numSala) throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void reservarAsiento(FuncionDTO funcion, AsientoDTO asiento) throws NegocioException {
+        try {
+            salaDAO.reservarAsiento(FuncionMapper.toEntity(funcion), SalaMapper.toAsientoEntity(asiento));
+        } catch (DaoException e) {
+            throw new NegocioException("Error al reservar asiento", e);
+        }
     }
     
 }

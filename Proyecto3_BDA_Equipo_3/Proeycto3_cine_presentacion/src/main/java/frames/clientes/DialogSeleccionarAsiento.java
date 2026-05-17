@@ -4,13 +4,20 @@
  */
 package frames.clientes;
 
+import controllers.BoletoController;
 import controllers.SalaController;
 import controllers.factory.FabricaControllers;
 import dto.funciones.FuncionDTO;
 import dto.salas.AsientoDTO;
+import dto.usuarios.UsuarioDTO;
+import dtos.boletos.BoletoDTO;
 import excepciones.presentacion.ControllerException;
+import java.awt.Frame;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import tables.ModeloTablaAsientos;
 
 /**
@@ -19,27 +26,36 @@ import tables.ModeloTablaAsientos;
  */
 public class DialogSeleccionarAsiento extends javax.swing.JDialog {
     private final SalaController salaControl;
+    private final BoletoController boletoControl;
     private final FuncionDTO funcionSeleccionada;
     private AsientoDTO asientoSeleccionado;
+    private BoletoDTO boletoGenerado;
     private ModeloTablaAsientos modelo;
+    private final UsuarioDTO cliente;
+    private List<AsientoDTO> asientos;
     /**
      * Creates new form DialogSeleccionarAsiento
      * @param parent
      * @param funcionSeleccionada
      * @param modal
+     * @param cliente
      */
-    public DialogSeleccionarAsiento(java.awt.Frame parent, boolean modal,FuncionDTO funcionSeleccionada) {
+    public DialogSeleccionarAsiento(java.awt.Frame parent, boolean modal,FuncionDTO funcionSeleccionada,UsuarioDTO cliente) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
         this.salaControl = FabricaControllers.getSalaController();
+        this.boletoControl = FabricaControllers.getBoletoController();
         this.funcionSeleccionada = funcionSeleccionada;
+        
         llenarTablaAsientos();
+        this.cliente = cliente;
+        
     }
     
     private void llenarTablaAsientos(){
         try {
-            List<AsientoDTO> asientos = salaControl.listarAsientosDisponibles(funcionSeleccionada.getNumSala());
+            asientos = salaControl.listarAsientosDisponibles(funcionSeleccionada.getNumSala());
             
             modelo = new ModeloTablaAsientos(asientos);
             
@@ -67,11 +83,51 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
 
             return;
         }
+        
+        
 
         asientoSeleccionado = modelo.obtenerAsiento(filaSeleccionada);
+        
+        try {
+            salaControl.reservarAsiento(funcionSeleccionada, asientoSeleccionado);
+        } catch (ControllerException ex) {
+            Logger.getLogger(DialogSeleccionarAsiento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+        try {
+            this.boletoGenerado = boletoControl.reservarAsiento(cliente.getId(), funcionSeleccionada.getId(), asientoSeleccionado);
+        } catch (ControllerException ex) {
+            Logger.getLogger(DialogConfirmarBoleto.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         dispose();
     }
+    
+    private void abrirDialogBoleto(){
+        DialogConfirmarBoleto dialog = new DialogConfirmarBoleto(
+                (Frame) SwingUtilities.getWindowAncestor(this),
+                true,
+                this.funcionSeleccionada,
+                this.asientoSeleccionado,
+                cliente,
+                boletoGenerado
+            );
+        
+        dialog.setVisible(true);
+        BoletoDTO boleto = dialog.getBoletoGenerado();
+        
+
+        if (boleto != null) {
+            this.boletoGenerado = boleto;
+        }
+    }
+
+    public BoletoDTO getBoletoGenerado() {
+        return boletoGenerado;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -146,6 +202,8 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getClickCount() == 1) {
             seleccionarAsiento();
+            abrirDialogBoleto();
+            
         }
     }//GEN-LAST:event_tblAsientosMouseClicked
 

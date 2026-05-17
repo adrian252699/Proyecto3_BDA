@@ -11,20 +11,25 @@ import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Updates;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 import com.mongodb.client.result.UpdateResult;
 import config.ConexionMongo;
 import embebidos.Asiento;
 import embebidos.Sala;
+import entidades.Funcion;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
 import interfaces.ISalaDAO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -166,6 +171,40 @@ public class SalaDAO implements ISalaDAO{
             return sala;
         } catch (MongoException e) {
            throw new DaoException("Error al buscar por numero de sala", e);
+        }
+    }
+
+    @Override
+    public void reservarAsiento(Funcion funcion, Asiento asiento) throws DaoException {
+        try {
+            
+            Sala salaFuncion = buscarPorNumero(funcion.getSala().getNumSala());
+            
+            UpdateResult resultado =
+            coleccion.updateOne(
+
+                Filters.and(
+                        Filters.eq("_id", salaFuncion.getId()),
+                        Filters.eq(
+                                "asientos.fila",
+                                asiento.getFila()
+                        ),
+                        Filters.eq(
+                                "asientos.numAsiento",
+                                asiento.getNumAsiento()
+                        )
+                ),
+
+                Updates.set(
+                        "asientos.$.disponible",
+                        false
+                )
+            );
+            
+        } catch (MongoException e) {
+           throw new DaoException("Error al reservar asiento", e);
+        } catch (EntityNotFoundException ex) {
+            throw new DaoException("no se encontro una sala");
         }
     }
     

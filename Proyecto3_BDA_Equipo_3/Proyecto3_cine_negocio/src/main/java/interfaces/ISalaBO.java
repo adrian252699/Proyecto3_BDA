@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import dto.funciones.FuncionDTO;
 import dto.salas.SalaDTO;
 import dto.salas.AsientoDTO;
 import dto.salas.CrearSalaDTO;
@@ -20,4 +21,5 @@ public interface ISalaBO {
     public List<SalaDTO> listarSalas()throws NegocioException;
     public List<AsientoDTO> listarAsientosDisponibles(Integer numSala)throws NegocioException;
     public List<AsientoDTO> listarAsientosOcupados(Integer numSala)throws NegocioException;
+    public void reservarAsiento(FuncionDTO funcion, AsientoDTO asiento)throws NegocioException;
 }

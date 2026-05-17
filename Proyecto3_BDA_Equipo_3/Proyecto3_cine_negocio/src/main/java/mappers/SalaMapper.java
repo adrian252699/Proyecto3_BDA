@@ -25,7 +25,7 @@ public class SalaMapper {
     }
     
     /**
-     * Convierte una entidad Funcion a FuncionDTO
+     * Convierte una entidad Sala a SalaDTO
      * @param sala
      * @return 
      */

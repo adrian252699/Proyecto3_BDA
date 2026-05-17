@@ -6,6 +6,7 @@ package interfaces;
 
 import embebidos.Asiento;
 import embebidos.Sala;
+import entidades.Funcion;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
 import java.util.List;
@@ -21,4 +22,5 @@ public interface ISalaDAO {
     public List<Sala> listarSalas()throws DaoException;
     public List<Asiento> listarAsientosDisponibles(Integer numSala)throws DaoException;
     public List<Asiento> listarAsientosOcupados(Integer numSala)throws DaoException;
+    public void reservarAsiento(Funcion funcion, Asiento asiento)throws DaoException;
 }

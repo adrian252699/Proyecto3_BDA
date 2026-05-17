@@ -8,6 +8,7 @@ import controllers.FuncionController;
 import controllers.factory.FabricaControllers;
 import dto.funciones.FuncionDTO;
 import dto.salas.AsientoDTO;
+import dto.usuarios.UsuarioDTO;
 import dtos.PeliculaDTO;
 import excepciones.presentacion.ControllerException;
 import java.awt.Frame;
@@ -27,21 +28,25 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
     private final PeliculaDTO peliculaSeleccionada;
     private AsientoDTO asientoSeleccionado;
     private final FuncionController control;
+    private final UsuarioDTO cliente;
     /**
      * Creates new form DialogSeleccionarFuncion
      * @param parent
      * @param modal
      * @param peliculaSeleccionada
+     * @param cliente
      */
-    public DialogSeleccionarFuncion(java.awt.Frame parent, boolean modal, PeliculaDTO peliculaSeleccionada) {
+    public DialogSeleccionarFuncion(java.awt.Frame parent, boolean modal, PeliculaDTO peliculaSeleccionada,UsuarioDTO cliente) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
+        this.cliente = cliente;
         this.control = FabricaControllers.getFuncionController();
         this.peliculaSeleccionada = peliculaSeleccionada;
         this.lblPelicula.setText("Funciones para "+this.peliculaSeleccionada.getTitulo());
         this.dateFuncion.setDate(LocalDate.now());
         llenarTablaFuncionesPelicula();
+        
         
     }
     
@@ -103,7 +108,8 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
         DialogSeleccionarAsiento dialog = new DialogSeleccionarAsiento(
                 (Frame) SwingUtilities.getWindowAncestor(this),
                 true,
-                this.funcionSeleccionada
+                this.funcionSeleccionada,
+                cliente
             );
         
         dialog.setVisible(true);

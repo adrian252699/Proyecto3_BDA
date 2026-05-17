@@ -105,6 +105,42 @@ public class FuncionMapper {
 
         return funcion;
     }
+    
+    public static Funcion toEntity(
+            FuncionDTO dto
+    ) {
+
+        if (dto == null) {
+            return null;
+        }
+
+        Funcion funcion = new Funcion();
+
+        funcion.setPeliculaId(
+                new ObjectId(dto.getPeliculaId())
+        );
+
+        Sala sala = new Sala();
+
+        sala.setNumSala(
+                dto.getNumSala()
+        );
+
+        funcion.setSala(sala);
+
+        funcion.setFecha(
+                dto.getFecha()
+        );
+        
+        
+        funcion.setTituloPelicula(dto.getTituloPelicula());
+
+        funcion.setHora(
+                dto.getHora()
+        );
+
+        return funcion;
+    }
 
     /**
      * Convierte ActualizarFuncionDTO a entidad Funcion

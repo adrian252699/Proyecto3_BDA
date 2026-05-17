@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dto.funciones.FuncionDTO;
 import dto.salas.AsientoDTO;
 import dto.salas.CrearSalaDTO;
 import dto.salas.SalaDTO;
@@ -37,6 +38,14 @@ public class SalaController {
             return salaBO.crearSala(salaDTO);
         } catch (NegocioException e) {
             throw new ControllerException("No fue posible crear sala: ", e);
+        }
+    }
+    
+    public void reservarAsiento(FuncionDTO funcion, AsientoDTO asiento)throws ControllerException{
+        try {
+            salaBO.reservarAsiento(funcion, asiento);
+        } catch (NegocioException e) {
+            throw new ControllerException("No fue reservar asiento: ", e);
         }
     }
 }

@@ -4,6 +4,7 @@
  */
 package controllers.factory;
 
+import controllers.BoletoController;
 import controllers.FuncionController;
 import controllers.PeliculaController;
 import controllers.SalaController;
@@ -21,6 +22,8 @@ public class FabricaControllers {
     private static FuncionController funcionController;
     
     private static SalaController salaController;
+    
+    private static BoletoController boletoController;
 
     private FabricaControllers() {}
 
@@ -60,5 +63,13 @@ public class FabricaControllers {
             salaController = new SalaController();
         } 
         return salaController;
+    }
+    
+    public static BoletoController getBoletoController(){
+        if (boletoController==null) {
+            boletoController = new BoletoController();
+        }
+        
+        return boletoController;
     }
 }

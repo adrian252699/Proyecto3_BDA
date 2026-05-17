@@ -9,5 +9,5 @@ package enums;
  * @author jalt2
  */
 public enum EstadoBoleto {
-    ACTIVO, COMPRADO, CANCELADO
+    ACTIVO, RESERVADO, VENDIDO, CANCELADO
 }
