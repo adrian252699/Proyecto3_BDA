@@ -4,11 +4,17 @@
  */
 package frames.clientes;
 
+import controllers.UsuarioController;
+import controllers.factory.FabricaControllers;
 import dto.usuarios.UsuarioDTO;
 import enums.Rol;
+import excepciones.presentacion.ControllerException;
 import frames.login.FrmLogin;
 import java.awt.CardLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 /**
  *
@@ -19,6 +25,7 @@ public class MenuCliente extends javax.swing.JFrame {
     private CardLayout cardLayout;
     private PnlMiPerfil pnlMiPerfil;
     private PnlInicio pnlInicio;
+    private final UsuarioController control;
     
     /**
      * Creates new form MenuCliente
@@ -27,6 +34,7 @@ public class MenuCliente extends javax.swing.JFrame {
     public MenuCliente(UsuarioDTO cliente) {
         if (cliente == null) {
             throw new IllegalArgumentException( "Cliente requerido");
+            
         }
 
         if (cliente.getRol() != Rol.CLIENTE) {
@@ -35,6 +43,7 @@ public class MenuCliente extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.cliente = cliente;
+        this.control = FabricaControllers.getUsuarioController();
         cardLayout = new CardLayout();
         pnlContenido.setLayout(cardLayout);
         inicializarPanels();
@@ -77,6 +86,39 @@ public class MenuCliente extends javax.swing.JFrame {
         
         this.dispose();
     }
+    
+    private String autenticarUsuario() {
+
+        JPasswordField passwordField = new JPasswordField();
+
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                passwordField,
+                "Ingrese su contraseña actual",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (opcion != JOptionPane.OK_OPTION) {
+            return null;
+        }
+
+        String password = new String(passwordField.getPassword());
+
+        if (password.trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La contraseña es obligatoria.",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return null;
+        }
+
+        return password;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,6 +134,7 @@ public class MenuCliente extends javax.swing.JFrame {
         mnuBar = new javax.swing.JMenuBar();
         mnuInicio = new javax.swing.JMenu();
         btnIncio = new javax.swing.JMenuItem();
+        btnDesactivarCuenta = new javax.swing.JMenuItem();
         mnuMiPerfil = new javax.swing.JMenu();
         btnMiPerfil = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -115,6 +158,14 @@ public class MenuCliente extends javax.swing.JFrame {
             }
         });
         mnuInicio.add(btnIncio);
+
+        btnDesactivarCuenta.setText("Desactivar Cuenta");
+        btnDesactivarCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesactivarCuentaActionPerformed(evt);
+            }
+        });
+        mnuInicio.add(btnDesactivarCuenta);
 
         mnuBar.add(mnuInicio);
 
@@ -178,9 +229,42 @@ public class MenuCliente extends javax.swing.JFrame {
         cerrarSesion();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
+    private void btnDesactivarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarCuentaActionPerformed
+        try {
+            String passwordActual = autenticarUsuario();
+            
+            if (passwordActual==null) {
+                return;
+            }
+            
+            // TODO add your handling code here:
+            boolean desactivado = control.desactivarUsuario(cliente.getId(),passwordActual);
+            if (desactivado) {
+                JOptionPane.showMessageDialog(this, "Cuenta desactivada, contactar un admin para reactivar.");
+
+                this.cliente = null;
+
+                FrmLogin login = new FrmLogin();
+
+                login.setVisible(true);
+
+                this.dispose();
+            }
+            
+        } catch (ControllerException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_btnDesactivarCuentaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCerrarSesion;
+    private javax.swing.JMenuItem btnDesactivarCuenta;
     private javax.swing.JMenuItem btnIncio;
     private javax.swing.JMenuItem btnMiPerfil;
     private javax.swing.JMenu jMenu2;

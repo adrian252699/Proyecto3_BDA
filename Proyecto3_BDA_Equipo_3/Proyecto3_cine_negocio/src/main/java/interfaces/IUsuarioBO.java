@@ -28,7 +28,7 @@ public interface IUsuarioBO {
     
     public UsuarioDTO actualizarCorreo(String id, ActualizarCorreoDTO correoDTO)throws NegocioException;
     
-    public boolean desactivarUsuario(String id)throws NegocioException;
+    public boolean desactivarUsuario(String id, String password)throws NegocioException;
     
     public boolean activarUsuario(String id)throws NegocioException;
     

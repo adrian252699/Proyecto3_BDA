@@ -355,10 +355,14 @@ public class UsuarioBO implements IUsuarioBO{
     
     //Ya en ocntroller
     @Override
-    public boolean desactivarUsuario(String id) throws NegocioException {
+    public boolean desactivarUsuario(String id, String password) throws NegocioException {
         try {
             if (id == null || id.trim().isEmpty()) {
                 throw new NegocioException( "El id del usuario es obligatorio");
+            }
+            
+            if (password == null || password.trim().isEmpty()) {
+                throw new NegocioException( "Contraseña requerida");
             }
             
             ObjectId objectId;
@@ -369,11 +373,24 @@ public class UsuarioBO implements IUsuarioBO{
                 throw new NegocioException("Id inválido");
             }
             
+            Usuario usuarioActual = usuarioDAO.buscarPorId(objectId);
+            
+            boolean passwordCorrecta = PasswordUtil.verificar(
+                    password, 
+                    usuarioActual.getPasswordHash()
+            );
+            
+            if (!passwordCorrecta) {
+                throw new NegocioException("La contraseña actual es incorrecta");
+            }
+            
             return usuarioDAO.desactivarUsuario(objectId);
             
         }catch (DaoException e) {
             throw new NegocioException("Error al desactivar usuario:", e);
-        }
+        }catch (EntityNotFoundException ex) {
+            throw new NegocioException(ex.getMessage());
+        } 
     }
 
     //Ya en ocntroller

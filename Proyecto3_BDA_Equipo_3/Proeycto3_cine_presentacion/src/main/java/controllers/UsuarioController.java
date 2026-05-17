@@ -67,9 +67,9 @@ public class UsuarioController {
         }
     }
     
-    public boolean desactivarUsuario(String id) throws ControllerException{
+    public boolean desactivarUsuario(String id, String password) throws ControllerException{
         try {
-            return usuarioBO.desactivarUsuario(id);
+            return usuarioBO.desactivarUsuario(id,password);
         } catch (NegocioException e) {
             throw new ControllerException("No fue posible desactivar al usuario: "+e.getMessage());
         }
