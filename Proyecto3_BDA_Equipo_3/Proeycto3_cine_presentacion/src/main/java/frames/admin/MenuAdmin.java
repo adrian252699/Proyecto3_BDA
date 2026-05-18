@@ -58,8 +58,6 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnGestionPeliculas = new javax.swing.JMenuItem();
         mnuFunciones = new javax.swing.JMenu();
         btnGestionFunciones = new javax.swing.JMenuItem();
-        mnuPagos = new javax.swing.JMenu();
-        mnuBoletos = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,12 +116,6 @@ public class MenuAdmin extends javax.swing.JFrame {
         mnuFunciones.add(btnGestionFunciones);
 
         jMenuBar1.add(mnuFunciones);
-
-        mnuPagos.setText("Pagos");
-        jMenuBar1.add(mnuPagos);
-
-        mnuBoletos.setText("Boletos");
-        jMenuBar1.add(mnuBoletos);
 
         setJMenuBar(jMenuBar1);
 
@@ -188,11 +180,9 @@ public class MenuAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnModificarPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu mnuBoletos;
     private javax.swing.JMenu mnuFunciones;
     private javax.swing.JMenu mnuGestionarClientes;
     private javax.swing.JMenu mnuMiPerfil;
-    private javax.swing.JMenu mnuPagos;
     private javax.swing.JMenu mnuPeliculas;
     private javax.swing.JPanel pnlContenido;
     // End of variables declaration//GEN-END:variables

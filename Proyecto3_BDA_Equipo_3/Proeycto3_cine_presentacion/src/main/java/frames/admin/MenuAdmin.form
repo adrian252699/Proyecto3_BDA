@@ -64,16 +64,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuPagos">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Pagos"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuBoletos">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Boletos"/>
-          </Properties>
-        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>

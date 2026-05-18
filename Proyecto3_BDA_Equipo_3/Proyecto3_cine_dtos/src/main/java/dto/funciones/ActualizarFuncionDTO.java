@@ -15,6 +15,8 @@ public class ActualizarFuncionDTO {
     private String id;
 
     private String peliculaId;
+    
+    private String tituloPelicula;
 
     private Integer numSala;
 
@@ -26,6 +28,26 @@ public class ActualizarFuncionDTO {
 
     public ActualizarFuncionDTO() {
     }
+
+    public ActualizarFuncionDTO(String id, String peliculaId, String tituloPelicula, Integer numSala, Integer capacidadSala, LocalDate fecha, LocalTime hora) {
+        this.id = id;
+        this.peliculaId = peliculaId;
+        this.tituloPelicula = tituloPelicula;
+        this.numSala = numSala;
+        this.capacidadSala = capacidadSala;
+        this.fecha = fecha;
+        this.hora = hora;
+    }
+
+    public String getTituloPelicula() {
+        return tituloPelicula;
+    }
+
+    public void setTituloPelicula(String tituloPelicula) {
+        this.tituloPelicula = tituloPelicula;
+    }
+
+    
 
     public String getId() {
         return id;

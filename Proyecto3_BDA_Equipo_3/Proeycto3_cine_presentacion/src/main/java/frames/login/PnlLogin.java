@@ -108,6 +108,7 @@ public class PnlLogin extends javax.swing.JPanel {
                 "Error",
                 JOptionPane.INFORMATION_MESSAGE
             );
+            limpiarCampos();
         }  
     }
     
@@ -124,6 +125,11 @@ public class PnlLogin extends javax.swing.JPanel {
                 rootPane.setDefaultButton(btnIniciarSesion);
             }
         });
+    }
+    
+    private void limpiarCampos(){
+        txtCorreo.setText("");
+        txtPassword.setText("");
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

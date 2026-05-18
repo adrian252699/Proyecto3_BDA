@@ -1,4 +1,4 @@
--/*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -11,25 +11,14 @@ import dto.salas.CrearSalaDTO;
 import embebidos.Asiento;
 import embebidos.Sala;
 import excepciones.daos.DaoException;
-import excepciones.negocio.NegocioException;
+import excepciones.daos.EntityNotFoundException;
 import interfaces.ISalaBO;
 import interfaces.ISalaDAO;
 import java.util.List;
-import mappers.FuncionMapper;
-import mappers.SalaMapper;
-
-import mappers.SalaMapper;
-
-import mappers.SalaMapper;
 
 import excepciones.negocio.NegocioException;
-
-import excepciones.negocio.NegocioException;
-
-import excepciones.negocio.NegocioException;
-
-import excepciones.negocio.NegocioException;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mappers.FuncionMapper;
 
 import mappers.SalaMapper;
@@ -96,7 +85,10 @@ public class SalaBO implements ISalaBO {
             return SalaMapper.toDTO(salaActualizada);
         } catch (DaoException e) {
             throw new NegocioException("Error al modificar sala", e);
+        } catch (EntityNotFoundException ex) {
+            Logger.getLogger(SalaBO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     @Override

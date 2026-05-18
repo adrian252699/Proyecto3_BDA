@@ -36,7 +36,7 @@ public class PruebaSalas {
 
         try {
 
-            for (int numPeliculas = 1; numPeliculas < peliculas.size(); numPeliculas++) {
+            for (int numSala = 1; numSala <= 5; numSala++) {
 
                 List<AsientoDTO> asientos = new ArrayList<>();
 

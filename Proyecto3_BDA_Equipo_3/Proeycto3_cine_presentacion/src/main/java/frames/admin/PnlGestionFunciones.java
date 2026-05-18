@@ -46,6 +46,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
                 JOptionPane.ERROR_MESSAGE
             );
         }
+        
         limpiarCampos();
     }
     
@@ -508,16 +509,17 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        dateFechaFuncion = new org.netbeans.modules.form.InvalidComponent();
-        timeFuncion = new org.netbeans.modules.form.InvalidComponent();
         txtPelicula = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
         cmbSala = new javax.swing.JComboBox<>();
         btnRegistrar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnDesactivar = new javax.swing.JButton();
+        dateFechaFuncion = new com.github.lgooddatepicker.components.DatePicker();
+        timeFuncion = new com.github.lgooddatepicker.components.TimePicker();
 
         pnlFunciones.setBackground(new java.awt.Color(9, 79, 138));
+        pnlFunciones.setMinimumSize(new java.awt.Dimension(1430, 683));
         pnlFunciones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tblFunciones.setModel(new javax.swing.table.DefaultTableModel(
@@ -560,12 +562,6 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         jLabel4.setText("Hora:");
         pnlFunciones.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, -1, -1));
 
-        dateFechaFuncion.null;
-        pnlFunciones.add(dateFechaFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 240, 30));
-
-        timeFuncion.null;
-        pnlFunciones.add(timeFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 240, 30));
-
         txtPelicula.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtPelicula.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
         pnlFunciones.add(txtPelicula, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 240, 30));
@@ -602,23 +598,15 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEditar.setForeground(new java.awt.Color(255, 255, 255));
         btnEditar.setText("EDITAR");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
         pnlFunciones.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, 120, 30));
 
         btnDesactivar.setBackground(new java.awt.Color(12, 93, 140));
         btnDesactivar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDesactivar.setForeground(new java.awt.Color(255, 255, 255));
         btnDesactivar.setText("DESACTIVAR");
-        btnDesactivar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDesactivarActionPerformed(evt);
-            }
-        });
         pnlFunciones.add(btnDesactivar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 520, 120, 30));
+        pnlFunciones.add(dateFechaFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 240, 30));
+        pnlFunciones.add(timeFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 240, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -657,7 +645,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox<String> cmbSala;
-    private org.netbeans.modules.form.InvalidComponent dateFechaFuncion;
+    private com.github.lgooddatepicker.components.DatePicker dateFechaFuncion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -666,7 +654,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
     private javax.swing.JPanel pnlFunciones;
     private javax.swing.JScrollPane scrPaneFunciones;
     private javax.swing.JTable tblFunciones;
-    private org.netbeans.modules.form.InvalidComponent timeFuncion;
+    private com.github.lgooddatepicker.components.TimePicker timeFuncion;
     private javax.swing.JTextField txtPelicula;
     // End of variables declaration//GEN-END:variables
 }
