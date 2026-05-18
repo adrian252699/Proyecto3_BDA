@@ -6,6 +6,7 @@ package frames.admin;
 
 import controllers.FuncionController;
 import controllers.factory.FabricaControllers;
+import dto.funciones.ActualizarFuncionDTO;
 import dto.funciones.FuncionDTO;
 import dto.funciones.RegistrarFuncionDTO;
 import dtos.PeliculaDTO;
@@ -23,7 +24,7 @@ import tables.ModeloTablaFunciones;
 
 /**
  *
- * @author jalt2
+ * @author jalt2, daya
  */
 public class PnlGestionFunciones extends javax.swing.JPanel {
     private final FuncionController control;
@@ -179,29 +180,37 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         }   
     }
     
-    private void llenarTablaFunciones() throws ControllerException{
-        try {
-            List<FuncionDTO> funciones = control.listarFunciones();
-        
-            ModeloTablaFunciones modelo = new ModeloTablaFunciones(funciones);
+   private void llenarTablaFunciones() throws ControllerException {
+    try {
+        List<FuncionDTO> funciones = control.listarFunciones();
 
-            tblFunciones.setModel(modelo);
-            
-        } catch (ControllerException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage()
-            );
-        }
+        ModeloTablaFunciones modelo = new ModeloTablaFunciones(funciones);
+
+        tblFunciones.setModel(modelo);
+
+        tblFunciones.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                cargarFuncionSeleccionada();
+            }
+        });
+
+    } catch (ControllerException e) {
+        JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
+}
     
-    private void limpiarCampos(){
+    private void limpiarCampos() {
         txtPelicula.setText("");
+        peliculaSeleccionada = null;
         cmbSala.setSelectedIndex(0);
         dateFechaFuncion.setDate(LocalDate.now());
         timeFuncion.setTime(LocalTime.of(12, 0));
-        
-    }   
+    }
     
     private void limpiarBordes() {
 
@@ -278,6 +287,209 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
             );
         }
     }
+    private void editarFuncion() {
+        int fila = tblFunciones.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Selecciona una función de la tabla.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        limpiarBordes();
+
+        LocalDate fecha = dateFechaFuncion.getDate();
+        LocalTime hora = timeFuncion.getTime();
+
+        if (peliculaSeleccionada == null && txtPelicula.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La película es obligatoria.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            txtPelicula.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            return;
+        }
+
+        if (cmbSala.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Debes seleccionar una sala.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            cmbSala.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            return;
+        }
+
+        if (fecha == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La fecha es obligatoria.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            dateFechaFuncion.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            return;
+        }
+
+        if (hora == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La hora es obligatoria.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            timeFuncion.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            return;
+        }
+
+        try {
+    ModeloTablaFunciones modelo = (ModeloTablaFunciones) tblFunciones.getModel();
+
+    FuncionDTO funcionSeleccionada = modelo.obtenerFuncion(fila);
+
+    if (funcionSeleccionada == null) {
+        JOptionPane.showMessageDialog(
+                this,
+                "No se pudo obtener la función seleccionada.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    Integer numSala = Integer.valueOf(cmbSala.getSelectedItem().toString());
+
+    String peliculaId;
+    String tituloPelicula;
+
+    if (peliculaSeleccionada != null) {
+        peliculaId = peliculaSeleccionada.getId();
+        tituloPelicula = peliculaSeleccionada.getTitulo();
+    } else {
+        peliculaId = funcionSeleccionada.getPeliculaId();
+        tituloPelicula = funcionSeleccionada.getTituloPelicula();
+    }
+
+    ActualizarFuncionDTO funcionActualizar = new ActualizarFuncionDTO(
+            funcionSeleccionada.getId(),
+            peliculaId,
+            tituloPelicula,
+            numSala,
+            funcionSeleccionada.getCapacidadSala(),
+            fecha,
+            hora
+    );
+
+    FuncionDTO funcionActualizada = control.actualizarFuncion(funcionActualizar);
+
+    if (funcionActualizada != null) {
+        JOptionPane.showMessageDialog(
+                this,
+                "Función actualizada correctamente."
+        );
+
+        llenarTablaFunciones();
+        limpiarCampos();
+    }
+
+    } catch (ControllerException e) {
+        JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+
+        }
+    
+    private void desactivarFuncion() {
+        int fila = tblFunciones.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Selecciona una función de la tabla.",
+                    "Dato faltante",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que deseas desactivar esta función?",
+                "Confirmar desactivación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        try {
+            ModeloTablaFunciones modelo = (ModeloTablaFunciones) tblFunciones.getModel();
+
+            // Este método debe existir en ModeloTablaFunciones
+            FuncionDTO funcionSeleccionada = modelo.obtenerFuncion(fila);
+
+            boolean desactivada = control.desactivarFuncion(funcionSeleccionada.getId());
+
+            if (desactivada) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Función desactivada correctamente."
+                );
+
+                llenarTablaFunciones();
+                limpiarCampos();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No se pudo desactivar la función.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+
+        } catch (ControllerException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+        private void cargarFuncionSeleccionada() {
+        int fila = tblFunciones.getSelectedRow();
+
+        if (fila == -1) {
+            return;
+        }
+
+        ModeloTablaFunciones modelo = (ModeloTablaFunciones) tblFunciones.getModel();
+        FuncionDTO funcion = modelo.obtenerFuncion(fila);
+
+        txtPelicula.setText(funcion.getTituloPelicula());
+        peliculaSeleccionada = null;
+
+        cmbSala.setSelectedItem(String.valueOf(funcion.getNumSala()));
+        dateFechaFuncion.setDate(funcion.getFecha());
+        timeFuncion.setTime(funcion.getHora());
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -296,8 +508,8 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        dateFechaFuncion = new com.github.lgooddatepicker.components.DatePicker();
-        timeFuncion = new com.github.lgooddatepicker.components.TimePicker();
+        dateFechaFuncion = new org.netbeans.modules.form.InvalidComponent();
+        timeFuncion = new org.netbeans.modules.form.InvalidComponent();
         txtPelicula = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
         cmbSala = new javax.swing.JComboBox<>();
@@ -306,7 +518,6 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         btnDesactivar = new javax.swing.JButton();
 
         pnlFunciones.setBackground(new java.awt.Color(9, 79, 138));
-        pnlFunciones.setMinimumSize(new java.awt.Dimension(1430, 683));
         pnlFunciones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tblFunciones.setModel(new javax.swing.table.DefaultTableModel(
@@ -349,12 +560,10 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         jLabel4.setText("Hora:");
         pnlFunciones.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, -1, -1));
 
-        dateFechaFuncion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
-        dateFechaFuncion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        dateFechaFuncion.null;
         pnlFunciones.add(dateFechaFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 240, 30));
 
-        timeFuncion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(7, 58, 87), 2));
-        timeFuncion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        timeFuncion.null;
         pnlFunciones.add(timeFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 240, 30));
 
         txtPelicula.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -393,12 +602,22 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEditar.setForeground(new java.awt.Color(255, 255, 255));
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
         pnlFunciones.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, 120, 30));
 
         btnDesactivar.setBackground(new java.awt.Color(12, 93, 140));
         btnDesactivar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDesactivar.setForeground(new java.awt.Color(255, 255, 255));
         btnDesactivar.setText("DESACTIVAR");
+        btnDesactivar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesactivarActionPerformed(evt);
+            }
+        });
         pnlFunciones.add(btnDesactivar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 520, 120, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -423,6 +642,14 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
         abrirDialogPeliculas();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        editarFuncion();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
+         desactivarFuncion();
+    }//GEN-LAST:event_btnDesactivarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDesactivar;
@@ -430,7 +657,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox<String> cmbSala;
-    private com.github.lgooddatepicker.components.DatePicker dateFechaFuncion;
+    private org.netbeans.modules.form.InvalidComponent dateFechaFuncion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -439,7 +666,7 @@ public class PnlGestionFunciones extends javax.swing.JPanel {
     private javax.swing.JPanel pnlFunciones;
     private javax.swing.JScrollPane scrPaneFunciones;
     private javax.swing.JTable tblFunciones;
-    private com.github.lgooddatepicker.components.TimePicker timeFuncion;
+    private org.netbeans.modules.form.InvalidComponent timeFuncion;
     private javax.swing.JTextField txtPelicula;
     // End of variables declaration//GEN-END:variables
 }
