@@ -7,6 +7,7 @@ package controllers;
 import dto.funciones.ActualizarFuncionDTO;
 import dto.funciones.FuncionDTO;
 import dto.funciones.RegistrarFuncionDTO;
+import dto.salas.AsientoDTO;
 import excepciones.negocio.NegocioException;
 import excepciones.presentacion.ControllerException;
 import factory.FabricaObjetosBO;
@@ -65,6 +66,14 @@ public class FuncionController {
         }
     }
     
+    public List<AsientoDTO> listarAsientosDisponibleFuncion(String funcionId) throws ControllerException{
+        try {
+            return funcionBO.listarAsientosDisponiblesFuncion(funcionId);
+        } catch (NegocioException e) {
+            throw new ControllerException(e.getMessage());
+        }
+    }
+    
     public List<FuncionDTO> listarFuncionesPaginado(int pagina, int limite) throws ControllerException{
         try {
             return funcionBO.listarFuncionesPaginado(pagina, limite);
@@ -100,6 +109,14 @@ public class FuncionController {
     public List<FuncionDTO> buscarFuncionesActivas() throws ControllerException{
         try {
             return funcionBO.buscarFuncionesActivas();
+        } catch (NegocioException e) {
+            throw new ControllerException(e.getMessage());
+        }
+    }
+    
+    public void reservarAsiento(String funcionId, AsientoDTO asiento) throws ControllerException{
+        try {
+            funcionBO.reservarAsiento(funcionId, asiento);
         } catch (NegocioException e) {
             throw new ControllerException(e.getMessage());
         }

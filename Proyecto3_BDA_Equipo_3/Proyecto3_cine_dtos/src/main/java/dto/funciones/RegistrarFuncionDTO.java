@@ -4,8 +4,10 @@
  */
 package dto.funciones;
 
+import dto.salas.AsientoDTO;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  *
@@ -15,6 +17,8 @@ public class RegistrarFuncionDTO {
     private String peliculaId;
     
     private String tituloPelicula;
+    
+    private List<AsientoDTO> asientosDiponibles;
 
     private Integer numSala;
 
@@ -32,6 +36,17 @@ public class RegistrarFuncionDTO {
         this.hora = hora;
     }
 
+    public RegistrarFuncionDTO(String peliculaId, String tituloPelicula, List<AsientoDTO> asientosDiponibles, Integer numSala, LocalDate fecha, LocalTime hora) {
+        this.peliculaId = peliculaId;
+        this.tituloPelicula = tituloPelicula;
+        this.asientosDiponibles = asientosDiponibles;
+        this.numSala = numSala;
+        this.fecha = fecha;
+        this.hora = hora;
+    }
+    
+    
+
     public RegistrarFuncionDTO(String peliculaId, String tituloPelicula, Integer numSala, LocalDate fecha, LocalTime hora) {
         this.peliculaId = peliculaId;
         this.tituloPelicula = tituloPelicula;
@@ -46,6 +61,14 @@ public class RegistrarFuncionDTO {
 
     public void setTituloPelicula(String tituloPelicula) {
         this.tituloPelicula = tituloPelicula;
+    }
+
+    public List<AsientoDTO> getAsientosDiponibles() {
+        return asientosDiponibles;
+    }
+
+    public void setAsientosDiponibles(List<AsientoDTO> asientosDiponibles) {
+        this.asientosDiponibles = asientosDiponibles;
     }
     
     

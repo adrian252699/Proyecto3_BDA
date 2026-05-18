@@ -108,6 +108,7 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
         DialogSeleccionarAsiento dialog = new DialogSeleccionarAsiento(
                 (Frame) SwingUtilities.getWindowAncestor(this),
                 true,
+                this,
                 this.funcionSeleccionada,
                 cliente
             );
@@ -148,6 +149,7 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         dateFuncion = new com.github.lgooddatepicker.components.DatePicker();
         btnFiltrar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -177,13 +179,13 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
         });
         scrPanel.setViewportView(tblFunciones);
 
-        pnlContenido.add(scrPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 700, 410));
+        pnlContenido.add(scrPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 700, 410));
 
+        jLabel2.setText("Filtrar por fecha");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Filtrar por fecha");
-        pnlContenido.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, -1, -1));
-        pnlContenido.add(dateFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 250, 30));
+        pnlContenido.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, -1, -1));
+        pnlContenido.add(dateFuncion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, 250, 30));
 
         btnFiltrar.setText("FILTRAR");
         btnFiltrar.setBackground(new java.awt.Color(12, 93, 140));
@@ -194,19 +196,30 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
                 btnFiltrarActionPerformed(evt);
             }
         });
-        pnlContenido.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 120, 120, 30));
+        pnlContenido.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 120, 120, 30));
+
+        btnVolver.setBackground(new java.awt.Color(255, 51, 51));
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setText("VOLVER");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+        pnlContenido.add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 590, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlContenido, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContenido, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -225,8 +238,14 @@ public class DialogSeleccionarFuncion extends javax.swing.JDialog {
         filtrarFuncionesFecha();
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnVolver;
     private com.github.lgooddatepicker.components.DatePicker dateFuncion;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblPelicula;

@@ -7,7 +7,9 @@ package negocio;
 import dto.funciones.ActualizarFuncionDTO;
 import dto.funciones.FuncionDTO;
 import dto.funciones.RegistrarFuncionDTO;
+import dto.salas.AsientoDTO;
 import dto.salas.SalaDTO;
+import embebidos.Asiento;
 import embebidos.Sala;
 import entidades.Funcion;
 import excepciones.daos.DaoException;
@@ -99,8 +101,9 @@ public class FuncionBO implements IFuncionBO{
                     )
             );
             
+            
             Funcion funcionEntidad = FuncionMapper.toEntity(funcionDTO);
-
+            funcionEntidad.setAsientos(SalaMapper.toAsientoEntityList(funcionDTO.getAsientosDiponibles()));
             funcionEntidad.setSala(sala);
             funcionEntidad.setActivo(true);
             
@@ -399,6 +402,31 @@ public class FuncionBO implements IFuncionBO{
         }
     }
     
+    @Override
+    public List<AsientoDTO> listarAsientosDisponiblesFuncion(String funcionId) throws NegocioException{
+        if (funcionId==null || funcionId.trim().isEmpty()) {
+            throw new NegocioException("El id de la funcion es  obligatorio");
+        }
+        
+        ObjectId objectId;
+        
+        try {
+            objectId = new ObjectId(funcionId.trim());
+        } catch (IllegalArgumentException e) {
+            throw new NegocioException(
+                    "Id de funcion inválido"
+            );
+        }
+        
+        try {
+            List<Asiento> listaEntidad = funcionDAO.listarAsientosDisponiblesFuncion(objectId);
+
+            return SalaMapper.toAsientoDTOList(listaEntidad);
+        } catch (DaoException e) {
+            throw new NegocioException("Error al listar asientos disponibles", e);
+        }
+    }
+    
     private Integer obtenerCapacidadSala(Integer numSala) throws NegocioException{
         //Capacidad de cada sala cambiar en caso de ser necesario
 
@@ -417,4 +445,36 @@ public class FuncionBO implements IFuncionBO{
             throw new NegocioException(ex.getMessage());
         }
     }
+
+    @Override
+    public void reservarAsiento(String funcionId, AsientoDTO asiento) throws NegocioException {
+        if (funcionId==null || funcionId.trim().isEmpty()) {
+            throw new NegocioException("El id de la funcion es  obligatorio");
+        }
+        
+        ObjectId objectId;
+        
+        try {
+            objectId = new ObjectId(funcionId.trim());
+        } catch (IllegalArgumentException e) {
+            throw new NegocioException(
+                    "Id de funcion inválido"
+            );
+        }
+        
+        if (asiento ==null) {
+            throw new NegocioException(
+                    "Asiento obligatorio"
+            );
+        }
+        
+        try {
+            funcionDAO.reservarAsiento(objectId, SalaMapper.toAsientoEntity(asiento));
+        } catch (DaoException e) {
+            throw new NegocioException("Error al reservar asiento", e);
+        }
+
+    }
+    
+    
 }

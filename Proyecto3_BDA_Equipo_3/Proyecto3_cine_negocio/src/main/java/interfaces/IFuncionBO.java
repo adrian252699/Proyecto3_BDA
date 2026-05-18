@@ -7,6 +7,7 @@ package interfaces;
 import dto.funciones.ActualizarFuncionDTO;
 import dto.funciones.FuncionDTO;
 import dto.funciones.RegistrarFuncionDTO;
+import dto.salas.AsientoDTO;
 import excepciones.negocio.NegocioException;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,4 +36,8 @@ public interface IFuncionBO {
     public List<FuncionDTO> buscarFuncionesPorPeliculaYFecha(String peliculaId, LocalDate fecha) throws NegocioException;
     
     List<FuncionDTO> buscarFuncionesActivas()throws NegocioException; 
+    
+    public List<AsientoDTO> listarAsientosDisponiblesFuncion(String funcionId) throws NegocioException;
+    
+    public void reservarAsiento(String funcionId, AsientoDTO asiento) throws NegocioException;
 }

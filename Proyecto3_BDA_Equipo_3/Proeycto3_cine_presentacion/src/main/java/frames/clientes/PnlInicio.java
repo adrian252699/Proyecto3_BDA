@@ -88,7 +88,7 @@ public class PnlInicio extends javax.swing.JPanel {
 
     }
     
-    private void abrirDialogPeliculas() {
+    private void abrirDialogFunciones() {
 
         DialogSeleccionarFuncion dialog = new DialogSeleccionarFuncion(
                 (Frame) SwingUtilities.getWindowAncestor(this),
@@ -259,7 +259,7 @@ public class PnlInicio extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (evt.getClickCount() == 1) {
             seleccionarPelicula();
-            abrirDialogPeliculas();
+            abrirDialogFunciones();
         }
     }//GEN-LAST:event_tblPeliculasMouseClicked
 

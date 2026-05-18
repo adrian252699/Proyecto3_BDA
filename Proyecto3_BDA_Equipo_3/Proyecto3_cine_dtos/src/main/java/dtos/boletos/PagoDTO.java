@@ -23,8 +23,7 @@ public class PagoDTO {
     public PagoDTO() {
     }
 
-    public PagoDTO(String id, String boletoId, Double monto, MetodoPago metodoPago, EstadoPago estadoPago, LocalDate fechaPago) {
-        this.id = id;
+    public PagoDTO(String boletoId, Double monto, MetodoPago metodoPago, EstadoPago estadoPago, LocalDate fechaPago) {;
         this.boletoId = boletoId;
         this.monto = monto;
         this.metodoPago = metodoPago;

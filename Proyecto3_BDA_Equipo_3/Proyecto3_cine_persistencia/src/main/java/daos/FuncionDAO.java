@@ -6,13 +6,17 @@ package daos;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Updates;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 import com.mongodb.client.result.UpdateResult;
 import config.ConexionMongo;
+import embebidos.Asiento;
 import entidades.Funcion;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
@@ -416,6 +420,78 @@ public class FuncionDAO implements IFuncionDAO{
                     "No fue posible buscar funciones con peliculas",
                     e
             );
+        }
+    }
+
+    @Override
+    public List<Asiento> listarAsientosDisponiblesFuncion(ObjectId funcionId) throws DaoException {
+        try {
+            Document doc = coleccionDoc.aggregate(Arrays.asList(
+                Aggregates.match(Filters.eq("_id", funcionId)),
+                Aggregates.project(Projections.fields(
+                    Projections.excludeId(),
+                    Projections.computed(
+                        "asientos",
+                        new Document("$filter", new Document()
+                            .append("input", "$asientos")
+                            .append("as", "a")
+                            .append("cond",
+                                new Document("$eq", Arrays.asList("$$a.disponible", true))
+                            )
+                        )
+                    )
+                ))
+            )).first();
+
+            if (doc == null || doc.get("asientos") == null) {
+                return new ArrayList<>();
+            }
+
+            List<Document> lista = doc.getList("asientos", Document.class);
+
+            List<Asiento> asientos = new ArrayList<>();
+
+            for (Document d : lista) {
+                asientos.add(new Asiento(
+                    d.getString("fila"),
+                    d.getInteger("numAsiento"),
+                    d.getBoolean("disponible")
+                ));
+            }
+
+            return asientos;
+        } catch (MongoException e) {
+            throw new DaoException("Error al obtener asientos disponibles", e);
+        }
+    }
+    
+    @Override
+    public void reservarAsiento(ObjectId funcionId, Asiento asiento) throws DaoException {
+        try {
+            
+            UpdateResult resultado =
+            coleccion.updateOne(
+
+                Filters.and(
+                        Filters.eq("_id", funcionId),
+                        Filters.eq(
+                                "asientos.fila",
+                                asiento.getFila()
+                        ),
+                        Filters.eq(
+                                "asientos.numAsiento",
+                                asiento.getNumAsiento()
+                        )
+                ),
+
+                Updates.set(
+                        "asientos.$.disponible",
+                        false
+                )
+            );
+            
+        } catch (MongoException e) {
+           throw new DaoException("Error al reservar asiento", e);
         }
     }
 

@@ -5,7 +5,7 @@
 package frames.clientes;
 
 import controllers.BoletoController;
-import controllers.SalaController;
+import controllers.FuncionController;
 import controllers.factory.FabricaControllers;
 import dto.funciones.FuncionDTO;
 import dto.salas.AsientoDTO;
@@ -14,8 +14,6 @@ import dtos.boletos.BoletoDTO;
 import excepciones.presentacion.ControllerException;
 import java.awt.Frame;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import tables.ModeloTablaAsientos;
@@ -25,8 +23,9 @@ import tables.ModeloTablaAsientos;
  * @author jalt2
  */
 public class DialogSeleccionarAsiento extends javax.swing.JDialog {
-    private final SalaController salaControl;
     private final BoletoController boletoControl;
+    private final FuncionController funcionControl;
+    private final DialogSeleccionarFuncion dialogAnt;
     private final FuncionDTO funcionSeleccionada;
     private AsientoDTO asientoSeleccionado;
     private BoletoDTO boletoGenerado;
@@ -37,25 +36,25 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
      * Creates new form DialogSeleccionarAsiento
      * @param parent
      * @param funcionSeleccionada
+     * @param dialogAnt
      * @param modal
      * @param cliente
      */
-    public DialogSeleccionarAsiento(java.awt.Frame parent, boolean modal,FuncionDTO funcionSeleccionada,UsuarioDTO cliente) {
+    public DialogSeleccionarAsiento(java.awt.Frame parent, boolean modal,DialogSeleccionarFuncion dialogAnt,FuncionDTO funcionSeleccionada,UsuarioDTO cliente) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
-        this.salaControl = FabricaControllers.getSalaController();
         this.boletoControl = FabricaControllers.getBoletoController();
+        this.funcionControl = FabricaControllers.getFuncionController();
+        this.dialogAnt = dialogAnt;
         this.funcionSeleccionada = funcionSeleccionada;
-        
         llenarTablaAsientos();
         this.cliente = cliente;
-        
     }
     
     private void llenarTablaAsientos(){
         try {
-            asientos = salaControl.listarAsientosDisponibles(funcionSeleccionada.getNumSala());
+            asientos = funcionControl.listarAsientosDisponibleFuncion(this.funcionSeleccionada.getId());
             
             modelo = new ModeloTablaAsientos(asientos);
             
@@ -83,24 +82,19 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
 
             return;
         }
-        
-        
-
         asientoSeleccionado = modelo.obtenerAsiento(filaSeleccionada);
         
         try {
-            salaControl.reservarAsiento(funcionSeleccionada, asientoSeleccionado);
+            funcionControl.reservarAsiento(funcionSeleccionada.getId(), asientoSeleccionado);
+            this.boletoGenerado = boletoControl.reservarAsiento(cliente.getId(), funcionSeleccionada.getId(), asientoSeleccionado);
+
         } catch (ControllerException ex) {
-            Logger.getLogger(DialogSeleccionarAsiento.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage()
+            );
         }
         
-
-        try {
-            this.boletoGenerado = boletoControl.reservarAsiento(cliente.getId(), funcionSeleccionada.getId(), asientoSeleccionado);
-        } catch (ControllerException ex) {
-            Logger.getLogger(DialogConfirmarBoleto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         dispose();
     }
     
@@ -108,6 +102,7 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
         DialogConfirmarBoleto dialog = new DialogConfirmarBoleto(
                 (Frame) SwingUtilities.getWindowAncestor(this),
                 true,
+                this,
                 this.funcionSeleccionada,
                 this.asientoSeleccionado,
                 cliente,
@@ -144,6 +139,7 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
         tblAsientos = new javax.swing.JTable();
         lblFiltrar = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -173,7 +169,7 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tblAsientos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 680, 450));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 710, 450));
 
         lblFiltrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFiltrar.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,17 +178,32 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
 
         jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una fila", "A", "B", "C", "D", "E", "F", "G", "H" }));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 90, 170, 30));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 90, 200, 30));
+
+        btnVolver.setBackground(new java.awt.Color(255, 51, 51));
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setText("VOLVER");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 603, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 779, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -207,12 +218,19 @@ public class DialogSeleccionarAsiento extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tblAsientosMouseClicked
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        dialogAnt.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
     public AsientoDTO getAsientoSeleccionado() {
         return asientoSeleccionado;
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnVolver;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -33,6 +33,16 @@ public class Pago {
         this.estadoPago = estadoPago;
     }
 
+    public Pago(ObjectId boletoId, Double monto, MetodoPago metodoPago, LocalDate fechaPago, EstadoPago estadoPago) {
+        this.boletoId = boletoId;
+        this.monto = monto;
+        this.metodoPago = metodoPago;
+        this.fechaPago = fechaPago;
+        this.estadoPago = estadoPago;
+    }
+    
+    
+
     public ObjectId getId() {
         return _id;
     }

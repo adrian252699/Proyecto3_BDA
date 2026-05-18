@@ -9,7 +9,7 @@ import embebidos.Sala;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
@@ -23,7 +23,7 @@ public class Funcion {
     private Sala sala;
     private LocalDate fecha;
     private LocalTime hora;
-    private ArrayList<Asiento> asientos;
+    private List<Asiento> asientos;
     private Instant createdAt;
     private Instant updatedAt;
     private boolean activo;
@@ -31,7 +31,7 @@ public class Funcion {
     public Funcion() {
     }
 
-    public Funcion(ObjectId _id, ObjectId peliculaId, String tituloPelicula, Sala sala, LocalDate fecha, LocalTime hora, ArrayList<Asiento> asientos, Instant createdAt, Instant updatedAt, boolean activo) {
+    public Funcion(ObjectId _id, ObjectId peliculaId, String tituloPelicula, Sala sala, LocalDate fecha, LocalTime hora, List<Asiento> asientos, Instant createdAt, Instant updatedAt, boolean activo) {
         this._id = _id;
         this.peliculaId = peliculaId;
         this.tituloPelicula = tituloPelicula;
@@ -100,11 +100,11 @@ public class Funcion {
         this.hora = hora;
     }
 
-    public ArrayList<Asiento> getAsientos() {
+    public List<Asiento> getAsientos() {
         return asientos;
     }
 
-    public void setAsientos(ArrayList<Asiento> asientos) {
+    public void setAsientos(List<Asiento> asientos) {
         this.asientos = asientos;
     }
 

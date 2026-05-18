@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import embebidos.Asiento;
 import entidades.Funcion;
 import excepciones.daos.DaoException;
 import excepciones.daos.EntityNotFoundException;
@@ -44,4 +45,7 @@ public interface IFuncionDAO {
     public List<Funcion> buscarFuncionesActivas() throws DaoException;
     
     public List<Funcion> listarFuncionesPelicula()throws DaoException;
+    
+    public List<Asiento> listarAsientosDisponiblesFuncion(ObjectId funcionId) throws DaoException;
+    public void reservarAsiento(ObjectId funcionId, Asiento asiento) throws DaoException;
 }

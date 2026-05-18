@@ -4,9 +4,13 @@
  */
 package controllers;
 
+import dto.funciones.RegistrarFuncionDTO;
 import dto.salas.AsientoDTO;
 import dto.salas.CrearSalaDTO;
+import dtos.PeliculaDTO;
 import excepciones.presentacion.ControllerException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,15 +24,19 @@ public class PruebaSalas {
 
     /**
      * @param args the command line arguments
+     * @throws excepciones.presentacion.ControllerException
      */
-    public static void main(String[] args) {
-        SalaController control = new SalaController();
+    public static void main(String[] args) throws ControllerException {
+        FuncionController control = new FuncionController();
+        PeliculaController controlPelicula = new PeliculaController();
 
         String[] filas = {"A", "B", "C", "D", "E"};
+        
+        List<PeliculaDTO> peliculas = controlPelicula.listarPeliculas();
 
         try {
 
-            for (int numSala = 1; numSala <= 5; numSala++) {
+            for (int numPeliculas = 1; numPeliculas < peliculas.size(); numPeliculas++) {
 
                 List<AsientoDTO> asientos = new ArrayList<>();
 
@@ -37,17 +45,15 @@ public class PruebaSalas {
                         asientos.add(new AsientoDTO(fila, i, true));
                     }
                 }
+                
+                PeliculaDTO pelicula = peliculas.get(numPeliculas);
 
-                CrearSalaDTO salaDTO = new CrearSalaDTO(
-                    numSala,
-                    50,
-                    asientos
-                );
+                RegistrarFuncionDTO funcionDTO = new RegistrarFuncionDTO(pelicula.getId(), pelicula.getTitulo(), asientos, 1, LocalDate.now(), LocalTime.now());
 
-                control.crearSala(salaDTO);
+                control.guardarFuncion(funcionDTO);
 
-                System.out.println("Sala " + numSala + " creada correctamente");
             }
+            
 
         } catch (ControllerException ex) {
             Logger.getLogger(PruebaSalas.class.getName())

@@ -74,8 +74,7 @@ public class BoletoMapper {
             return null;
         }
         
-        Pago pago = new Pago(
-                new ObjectId(dto.getId()), 
+        Pago pago = new Pago( 
                 new ObjectId(dto.getBoletoId()), 
                 dto.getMonto(), 
                 dto.getMetodoPago(), 

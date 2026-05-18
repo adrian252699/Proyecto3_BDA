@@ -10,12 +10,16 @@ import dto.funciones.FuncionDTO;
 import dto.salas.AsientoDTO;
 import dto.usuarios.UsuarioDTO;
 import dtos.boletos.BoletoDTO;
+import java.awt.Frame;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author jalt2
  */
 public class DialogConfirmarBoleto extends javax.swing.JDialog {
+
+    private final DialogSeleccionarAsiento dialogAnt;
 
     private final FuncionDTO funcionSeleccionada;
     private final BoletoController controlBoleto;
@@ -27,23 +31,23 @@ public class DialogConfirmarBoleto extends javax.swing.JDialog {
      * Creates new form DialogConfirmarBoleto
      * @param parent
      * @param modal
+     * @param dialogAnt
      * @param funcionSeleccionada
      * @param asientoSeleccionado
      * @param cliente
      * @param boletoGenerado
      */
-    public DialogConfirmarBoleto(java.awt.Frame parent, boolean modal,FuncionDTO funcionSeleccionada,AsientoDTO asientoSeleccionado,UsuarioDTO cliente,BoletoDTO boletoGenerado) {
+    public DialogConfirmarBoleto(java.awt.Frame parent, boolean modal,DialogSeleccionarAsiento dialogAnt,FuncionDTO funcionSeleccionada,AsientoDTO asientoSeleccionado,UsuarioDTO cliente,BoletoDTO boletoGenerado) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(parent);
         this.controlBoleto = FabricaControllers.getBoletoController();
         this.cliente = cliente;
+        this.dialogAnt = dialogAnt;
         this.funcionSeleccionada = funcionSeleccionada;
         this.asientoSeleccionado = asientoSeleccionado;
         this.boletoGenerado = boletoGenerado;
-        
         llenarCamposBoleto();
-        
-        
     }
 
     public BoletoDTO getBoletoGenerado() {
@@ -59,6 +63,18 @@ public class DialogConfirmarBoleto extends javax.swing.JDialog {
         this.txtAsiento.setText(asientoSeleccionado.getFila()+asientoSeleccionado.getNumero().toString());
         this.txtPrecio.setText(boletoGenerado.getPrecio().toString());
         
+    }
+    
+    private void abrirDialogPago(){
+        DialogPago dialog = new DialogPago(
+                (Frame) SwingUtilities.getWindowAncestor(this),
+                true,
+                this,
+                boletoGenerado
+            );
+        
+        dialog.setVisible(true);
+        dispose();
     }
 
     /**
@@ -85,6 +101,7 @@ public class DialogConfirmarBoleto extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         btnProcederPago = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -100,60 +117,113 @@ public class DialogConfirmarBoleto extends javax.swing.JDialog {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Pelicula:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-        jPanel1.add(txtPelicula, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 210, 30));
 
+        txtPelicula.setEditable(false);
+        txtPelicula.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtPelicula.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtPelicula.setEnabled(false);
+        jPanel1.add(txtPelicula, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 320, 30));
+
+        jLabel2.setText("Fecha:");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Fecha:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, -1, -1));
-        jPanel1.add(dateFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 220, 30));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
+
+        dateFecha.setEnabled(false);
+        jPanel1.add(dateFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 220, 30));
 
         jLabel3.setText("Hora:");
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, -1, -1));
-        jPanel1.add(timeHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 130, 220, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 190, -1, -1));
 
+        timeHora.setEnabled(false);
+        jPanel1.add(timeHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 220, 30));
+
+        jLabel4.setText("Sala:");
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Sala:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, -1, -1));
 
+        jLabel5.setText("Asiento:");
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Asiento:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
-        jPanel1.add(txtSala, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 210, 30));
-        jPanel1.add(txtAsiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 210, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, -1, -1));
 
+        txtSala.setEditable(false);
+        txtSala.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtSala.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtSala.setEnabled(false);
+        jPanel1.add(txtSala, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, 110, 30));
+
+        txtAsiento.setEditable(false);
+        txtAsiento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtAsiento.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtAsiento.setEnabled(false);
+        jPanel1.add(txtAsiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 130, 100, 30));
+
+        jLabel6.setText("Precio:");
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Precio:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, -1, -1));
-        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 210, 30));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
 
+        txtPrecio.setEditable(false);
+        txtPrecio.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtPrecio.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtPrecio.setEnabled(false);
+        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 210, 30));
+
+        btnProcederPago.setText("PROCEDER AL PAGO");
         btnProcederPago.setBackground(new java.awt.Color(12, 93, 140));
         btnProcederPago.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnProcederPago.setForeground(new java.awt.Color(255, 255, 255));
-        btnProcederPago.setText("PROCEDER AL PAGO");
-        jPanel1.add(btnProcederPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 520, -1, 30));
+        btnProcederPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcederPagoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnProcederPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 340, -1, 30));
+
+        btnVolver.setBackground(new java.awt.Color(255, 51, 51));
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setText("VOLVER");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 340, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnProcederPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcederPagoActionPerformed
+        // TODO add your handling code here:
+        abrirDialogPago();
+        
+    }//GEN-LAST:event_btnProcederPagoActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        dialogAnt.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnProcederPago;
+    private javax.swing.JButton btnVolver;
     private com.github.lgooddatepicker.components.DatePicker dateFecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
