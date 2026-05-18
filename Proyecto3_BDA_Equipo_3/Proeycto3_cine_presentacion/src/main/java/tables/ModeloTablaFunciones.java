@@ -13,24 +13,27 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author jalt2
  */
-public class ModeloTablaFunciones extends AbstractTableModel{
-    
+public class ModeloTablaFunciones extends AbstractTableModel {
+
     private List<FuncionDTO> funciones;
-    
+
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-    
+
     private final String[] columnas = {
         "Pelicula",
         "Sala",
         "Fecha",
         "Hora"
     };
-    
+
     public ModeloTablaFunciones(List<FuncionDTO> funciones) {
         this.funciones = funciones;
     }
-    
+
     public FuncionDTO obtenerFuncion(int fila) {
+        if (fila < 0 || fila >= funciones.size()) {
+            return null;
+        }
         return funciones.get(fila);
     }
 
@@ -52,13 +55,13 @@ public class ModeloTablaFunciones extends AbstractTableModel{
             case 0 -> funcion.getTituloPelicula();
             case 1 -> funcion.getNumSala();
             case 2 -> funcion.getFecha();
-            case 3 -> funcion.getHora().format(formatter);
+            case 3 -> funcion.getHora() != null ? funcion.getHora().format(formatter) : "";
             default -> null;
         };
     }
-    
+
     @Override
-    public String getColumnName(int column){
+    public String getColumnName(int column) {
         return columnas[column];
     }
 
@@ -70,8 +73,7 @@ public class ModeloTablaFunciones extends AbstractTableModel{
         this.funciones = funciones;
         fireTableDataChanged();
     }
-    
-    
+
     @Override
     public boolean isCellEditable(int row, int column) {
         return false;
